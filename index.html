@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supreme Group - Precision Components & Industrial Films</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'corporate-blue': '#1F6FEB',
+                        'safety-green': '#12B76A',
+                        'charcoal': '#1E1E1E'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(31, 111, 235, 0.05) 0%, rgba(18, 183, 106, 0.05) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23E5E7EB" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+       
+        .sticky-header {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+       
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+       
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+       
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+       
+        .accordion-content.active {
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body class="bg-white text-charcoal">
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 sticky-header border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-charcoal">Supreme Group</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#products" class="text-charcoal hover:text-corporate-blue transition-colors">Products</a>
+                    <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors">Films & Yarn</a>
+                    <a href="#quality" class="text-charcoal hover:text-corporate-blue transition-colors">Quality</a>
+                    <a href="#clients" class="text-charcoal hover:text-corporate-blue transition-colors">Clients</a>
+                    <a href="#about" class="text-charcoal hover:text-corporate-blue transition-colors">About</a>
+                    <a href="#contact" class="text-charcoal hover:text-corporate-blue transition-colors">Contact</a>
+                </nav>
+                <button class="md:hidden">
+                    <i class="fas fa-bars text-charcoal"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg py-20 lg:py-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl lg:text-6xl font-bold text-charcoal mb-6">
+                    Precision Components.<br>Consistent Supply.
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                    Non-hazardous industrial parts, films & yarn—engineered for reliability.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#contact" class="bg-corporate-blue text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                        Request a Quote
+                    </a>
+                    <button class="bg-safety-green text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-colors">
+                        Product Datasheets
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Industrial Components</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Precision-engineered non-hazardous plastic components for industrial applications</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+                    <div class="text-corporate-blue text-4xl mb-4">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Non-Electric Detonator Housings</h3>
+                    <p class="text-gray-600 text-sm mb-4">Outer plastic casings only - precision moulded for industrial use</p>
+                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                        Enquire
+                    </button>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+                    <div class="text-corporate-blue text-4xl mb-4">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">STL Connectors & Sleeves</h3>
+                    <p class="text-gray-600 text-sm mb-4">High-precision connectors for industrial applications</p>
+                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                        Enquire
+                    </button>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+                    <div class="text-corporate-blue text-4xl mb-4">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Booster Cups</h3>
+                    <p class="text-gray-600 text-sm mb-4">Plastic booster cups manufactured to exact specifications</p>
+                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                        Enquire
+                    </button>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+                    <div class="text-corporate-blue text-4xl mb-4">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Custom Moulded Parts</h3>
+                    <p class="text-gray-600 text-sm mb-4">Precision moulded components to your specifications</p>
+                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                        Enquire
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Films & Yarn Section -->
+    <section id="films-yarn" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Films & Yarn</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">High-quality packaging films and reinforcement yarn</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="text-safety-green text-4xl mb-4">
+                        <i class="fas fa-thread"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Fibrillated PP Yarn</h3>
+                    <ul class="text-gray-600 mb-6 space-y-2">
+                        <li>• High-strength bundling applications</li>
+                        <li>• Reinforcement for composite materials</li>
+                        <li>• UV stabilized options available</li>
+                        <li>• Custom denier specifications</li>
+                    </ul>
+                    <div class="bg-gray-50 p-4 rounded">
+                        <h4 class="font-semibold mb-2">Typical Specifications</h4>
+                        <table class="w-full text-sm">
+                            <tr><td>Denier Range:</td><td>500-2000</td></tr>
+                            <tr><td>Tensile Strength:</td><td>4-6 g/denier</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="text-safety-green text-4xl mb-4">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Slitted BOPP Films</h3>
+                    <ul class="text-gray-600 mb-6 space-y-2">
+                        <li>• Packaging and lamination applications</li>
+                        <li>• Precise width tolerances</li>
+                        <li>• Food-grade options available</li>
+                        <li>• Custom printing capabilities</li>
+                    </ul>
+                    <div class="bg-gray-50 p-4 rounded">
+                        <h4 class="font-semibold mb-2">Available Specifications</h4>
+                        <table class="w-full text-sm">
+                            <tr><td>Width Range:</td><td>12mm - 1600mm</td></tr>
+                            <tr><td>Thickness:</td><td>12-50 microns</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quality & Compliance -->
+    <section id="quality" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Quality & Compliance</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Rigorous quality control and compliance standards</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="text-safety-green text-4xl mb-4">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Material Traceability</h3>
+                    <p class="text-gray-600">Complete batch tracking from raw materials to finished products</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-safety-green text-4xl mb-4">
+                        <i class="fas fa-ruler"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Dimensional Tolerance</h3>
+                    <p class="text-gray-600">Precision manufacturing with tight tolerance controls</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-safety-green text-4xl mb-4">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Batch QC Testing</h3>
+                    <p class="text-gray-600">Every batch tested for quality and consistency</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-safety-green text-4xl mb-4">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">RoHS/REACH Compliant</h3>
+                    <p class="text-gray-600">Environmental compliance where applicable</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-safety-green text-4xl mb-4">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Non-Hazardous Components</h3>
+                    <p class="text-gray-600">All products are non-hazardous plastic components only</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-safety-green text-4xl mb-4">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">ISO Standards</h3>
+                    <p class="text-gray-600">Manufacturing processes follow international standards</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who We Serve -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Industries We Serve</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Trusted by leading companies across multiple industries</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+                <div class="text-center">
+                    <div class="text-corporate-blue text-5xl mb-4">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3 class="font-semibold">Mining</h3>
+                </div>
+                <div class="text-center">
+                    <div class="text-corporate-blue text-5xl mb-4">
+                        <i class="fas fa-hammer"></i>
+                    </div>
+                    <h3 class="font-semibold">Quarrying</h3>
+                </div>
+                <div class="text-center">
+                    <div class="text-corporate-blue text-5xl mb-4">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="font-semibold">Construction</h3>
+                </div>
+                <div class="text-center">
+                    <div class="text-corporate-blue text-5xl mb-4">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3 class="font-semibold">OEMs</h3>
+                </div>
+                <div class="text-center">
+                    <div class="text-corporate-blue text-5xl mb-4">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3 class="font-semibold">Packaging</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">About Supreme Group</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">A legacy of precision manufacturing with a vision for the future</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold mb-4 text-corporate-blue">Supreme Laminations</h3>
+                    <p class="text-gray-600 mb-4">Our legacy partnership firm with decades of experience in precision manufacturing and lamination processes.</p>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-corporate-blue rounded-full mr-3"></div>
+                            <span>Established manufacturing expertise</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-corporate-blue rounded-full mr-3"></div>
+                            <span>Proven track record in industrial components</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold mb-4 text-safety-green">Ananya Engineered Industrial Components & Pay Systems LLP</h3>
+                    <p class="text-gray-600 mb-4">Our parent holding company, positioned for future growth in industrial components and internal pay systems development.</p>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-safety-green rounded-full mr-3"></div>
+                            <span>Modern corporate structure</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-safety-green rounded-full mr-3"></div>
+                            <span>Future-ready for technology integration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Testimonials -->
+    <section id="clients" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Trusted by Industry Leaders</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Our clients rely on us for consistent quality and reliable supply</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
+                    <span class="text-gray-500 font-semibold">Client Logo 1</span>
+                </div>
+                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
+                    <span class="text-gray-500 font-semibold">Client Logo 2</span>
+                </div>
+                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
+                    <span class="text-gray-500 font-semibold">Client Logo 3</span>
+                </div>
+                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
+                    <span class="text-gray-500 font-semibold">Client Logo 4</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Band -->
+    <section class="py-16 bg-corporate-blue">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">Looking for consistent supply?</h2>
+            <p class="text-blue-100 mb-8 max-w-2xl mx-auto">Get in touch with our team for custom quotes and technical specifications</p>
+            <a href="#contact" class="bg-white text-corporate-blue px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+                Get Quote Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact & RFQ Form -->
+    <section id="contact" class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Request for Quote</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Tell us about your requirements and we'll get back to you with a detailed quote</p>
+            </div>
+            <form class="bg-white p-8 rounded-lg shadow-md">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-charcoal mb-2">Name *</label>
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-charcoal mb-2">Company *</label>
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-charcoal mb-2">Email *</label>
+                        <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-charcoal mb-2">Phone *</label>
+                        <input type="tel" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-charcoal mb-2">Item of Interest</label>
+                        <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
+                            <option>Select Product</option>
+                            <option>Non-Electric Detonator Housings</option>
+                            <option>STL Connectors & Sleeves</option>
+                            <option>Booster Cups</option>
+                            <option>Custom Moulded Parts</option>
+                            <option>Fibrillated PP Yarn</option>
+                            <option>Slitted BOPP Films</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-charcoal mb-2">City/State</label>
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-charcoal mb-2">Quantity & Specifications</label>
+                    <textarea rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" placeholder="Please provide quantity requirements and technical specifications..."></textarea>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-charcoal mb-2">File Upload</label>
+                    <input type="file" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
+                    <p class="text-xs text-gray-500 mt-1">Upload technical drawings, specifications, or reference documents</p>
+                </div>
+                <div class="mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="mr-3 text-corporate-blue">
+                        <span class="text-sm text-charcoal">Send me product datasheets</span>
+                    </label>
+                </div>
+                <button type="submit" class="w-full bg-corporate-blue text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                    Submit RFQ
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Frequently Asked Questions</h2>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-white border border-gray-200 rounded-lg">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-semibold text-charcoal">What are your typical lead times?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-600">Standard products: 2-3 weeks. Custom components: 4-6 weeks depending on complexity. Rush orders available with premium pricing.</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-semibold text-charcoal">What are your minimum order quantities?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-600">MOQs vary by product. Standard components: 1000 pieces minimum. Custom moulded parts: 5000 pieces minimum. Films and yarn: 500kg minimum.</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-semibold text-charcoal">Do you offer customization services?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-600">Yes, we specialize in custom moulded parts. Our engineering team can work with your specifications to develop components that meet your exact requirements.</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg">
+                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                        <span class="font-semibold text-charcoal">What compliance certifications do you maintain?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-600">We maintain ISO quality standards and RoHS/REACH compliance where applicable. All our products are non-hazardous plastic components with full material traceability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">Supreme Group</h3>
+                    <p class="text-gray-300 mb-4">Precision components and industrial films for reliable supply chains.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            <i class="fab fa-whatsapp text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            <i class="fas fa-phone text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            <i class="fas fa-envelope text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Information</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Noida, Uttar Pradesh</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Mathura, Uttar Pradesh</p>
+                        <p><i class="fas fa-envelope mr-2"></i>info@supremegroup.in</p>
+                        <p><i class="fas fa-phone mr-2"></i>+91 XXXXX XXXXX</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <div class="space-y-2">
+                        <a href="#products" class="block text-gray-300 hover:text-white">Products</a>
+                        <a href="#films-yarn" class="block text-gray-300 hover:text-white">Films & Yarn</a>
+                        <a href="#quality" class="block text-gray-300 hover:text-white">Quality</a>
+                        <a href="#contact" class="block text-gray-300 hover:text-white">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-12 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-300 text-sm">© 2024 Supreme Group. All rights reserved.</p>
+                    <p class="text-gray-400 text-xs mt-4 md:mt-0 max-w-md text-center md:text-right">
+                        We manufacture non-hazardous plastic components; we do not handle explosive substances.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Accordion functionality
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+           
+            // Close all other accordions
+            document.querySelectorAll('.accordion-content').forEach(item => {
+                if (item !== content) {
+                    item.classList.remove('active');
+                    item.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
+                }
+            });
+           
+            // Toggle current accordion
+            content.classList.toggle('active');
+            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your inquiry! We will get back to you within 24 hours.');
+        });
+
+        // Product Datasheets button
+        document.querySelector('button:contains("Product Datasheets")').addEventListener('click', function() {
+            alert('Product datasheets will be sent to your email. Please fill out the contact form to receive them.');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e18076d177595a',t:'MTc1NTAxNzc0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
