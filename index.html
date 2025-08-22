@@ -1,580 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supreme Group - Precision Components & Industrial Films</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Supreme Group - Precision Components & Industrial Film</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'corporate-blue': '#1F6FEB',
-                        'safety-green': '#12B76A',
-                        'charcoal': '#1E1E1E'
-                    }
-                }
+          theme: {
+            extend: {
+              colors: {
+                'corporate-blue': '#1F6FEB',
+                'safety-green' : '#12B76A',
+                'charcoal'     : '#1E1E1E',
+              }
             }
+          }
         }
     </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+
     <style>
-        .hero-bg {
-            background: linear-gradient(135deg, rgba(31, 111, 235, 0.05) 0%, rgba(18, 183, 106, 0.05) 100%),
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23E5E7EB" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        .hero-bg{
+          background:
+            linear-gradient(135deg, rgba(31,111,235,0.05) 0%, rgba(18,183,106,0.05) 100%),
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23E5E7EB" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
         }
-       
-        .sticky-header {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+
+        /* ✅ Stronger glass, more see-through while scrolling */
+        .sticky-header{
+          background: rgba(255,255,255,0.28);
+          -webkit-backdrop-filter: saturate(160%) blur(14px);
+          backdrop-filter: saturate(160%) blur(14px);
+          border-bottom: 1px solid rgba(255,255,255,0.35);
         }
-       
-        .card-hover {
-            transition: all 0.3s ease;
+
+        /* Accordion */
+        .accordion-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
+        .accordion-content.active{max-height:200px}
+
+        /* ✅ Logo: refined “pill” + clipped PNG (no white corners), bigger & aligned */
+        .logo-clip{
+          height: 4.75rem;           /* ~h-19 — fills the 6rem header nicely */
+          width:  9.5rem;            /* elongated pill */
+          border-radius: 9999px;
+          background: rgba(255,255,255,.16);
+          border: 1px solid rgba(255,255,255,.45);
+          box-shadow:
+            0 10px 30px -10px rgba(0,0,0,.25),
+            inset 0 1px 0 rgba(255,255,255,.35);
+          overflow: hidden;
+          display:flex;
+          align-items:center;
+          justify-content:center;
         }
-       
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-       
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-       
-        .accordion-content.active {
-            max-height: 200px;
+        .logo-clip img{
+          width:auto;
+          height:135%;                /* zoom so the blue oval touches the pill vertically */
+          object-fit:cover;
+          /* Trim the bitmap’s white edges so only the blue oval shows */
+          clip-path: ellipse(47% 42% at 50% 50%);
+          transform: translateY(1px); /* micro-centering */
+          user-select:none;
+          pointer-events:none;
         }
     </style>
 </head>
+
 <body class="bg-white text-charcoal">
-    <!-- Sticky Header -->
-    <header class="sticky top-0 z-50 sticky-header border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-charcoal">Supreme Group</h1>
-                </div>
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#products" class="text-charcoal hover:text-corporate-blue transition-colors">Products</a>
-                    <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors">Films & Yarn</a>
-                    <a href="#quality" class="text-charcoal hover:text-corporate-blue transition-colors">Quality</a>
-                    <a href="#clients" class="text-charcoal hover:text-corporate-blue transition-colors">Clients</a>
-                    <a href="#about" class="text-charcoal hover:text-corporate-blue transition-colors">About</a>
-                    <a href="#contact" class="text-charcoal hover:text-corporate-blue transition-colors">Contact</a>
-                </nav>
-                <button class="md:hidden">
-                    <i class="fas fa-bars text-charcoal"></i>
-                </button>
-            </div>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero-bg py-20 lg:py-32">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl lg:text-6xl font-bold text-charcoal mb-6">
-                    Precision Components.<br>Consistent Supply.
-                </h1>
-                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                    Non-hazardous industrial parts, films & yarn—engineered for reliability.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#contact" class="bg-corporate-blue text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                        Request a Quote
-                    </a>
-                    <button class="bg-safety-green text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-colors">
-                        Product Datasheets
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Industrial Components</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Precision-engineered non-hazardous plastic components for industrial applications</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                    <div class="text-corporate-blue text-4xl mb-4">
-                        <i class="fas fa-industry"></i>
+<!-- Sticky Header (glass + big clipped logo) -->
+<header class="sticky top-0 z-50 sticky-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-24">
+            <!-- Left: Logo + Brand -->
+            <a href="#top" class="flex items-center gap-4">
+          <span class="logo-clip">
+            <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
+          </span>
+                <div class="leading-tight">
+                    <div class="font-bold">
+                        <span class="text-corporate-blue text-3xl">Supreme</span>
+                        <span class="text-safety-green  text-3xl">Group</span>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Non-Electric Detonator Housings</h3>
-                    <p class="text-gray-600 text-sm mb-4">Outer plastic casings only - precision moulded for industrial use</p>
-                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                        Enquire
-                    </button>
+                    <p class="text-sm md:text-base text-gray-700/90 italic -mt-0.5">
+                        Delivering Excellence Since 2007
+                    </p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                    <div class="text-corporate-blue text-4xl mb-4">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">STL Connectors & Sleeves</h3>
-                    <p class="text-gray-600 text-sm mb-4">High-precision connectors for industrial applications</p>
-                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                        Enquire
-                    </button>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                    <div class="text-corporate-blue text-4xl mb-4">
-                        <i class="fas fa-circle"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Booster Cups</h3>
-                    <p class="text-gray-600 text-sm mb-4">Plastic booster cups manufactured to exact specifications</p>
-                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                        Enquire
-                    </button>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                    <div class="text-corporate-blue text-4xl mb-4">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Custom Moulded Parts</h3>
-                    <p class="text-gray-600 text-sm mb-4">Precision moulded components to your specifications</p>
-                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                        Enquire
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Films & Yarn Section -->
-    <section id="films-yarn" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Films & Yarn</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">High-quality packaging films and reinforcement yarn</p>
-            </div>
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-thread"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4">Fibrillated PP Yarn</h3>
-                    <ul class="text-gray-600 mb-6 space-y-2">
-                        <li>• High-strength bundling applications</li>
-                        <li>• Reinforcement for composite materials</li>
-                        <li>• UV stabilized options available</li>
-                        <li>• Custom denier specifications</li>
-                    </ul>
-                    <div class="bg-gray-50 p-4 rounded">
-                        <h4 class="font-semibold mb-2">Typical Specifications</h4>
-                        <table class="w-full text-sm">
-                            <tr><td>Denier Range:</td><td>500-2000</td></tr>
-                            <tr><td>Tensile Strength:</td><td>4-6 g/denier</td></tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-film"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4">Slitted BOPP Films</h3>
-                    <ul class="text-gray-600 mb-6 space-y-2">
-                        <li>• Packaging and lamination applications</li>
-                        <li>• Precise width tolerances</li>
-                        <li>• Food-grade options available</li>
-                        <li>• Custom printing capabilities</li>
-                    </ul>
-                    <div class="bg-gray-50 p-4 rounded">
-                        <h4 class="font-semibold mb-2">Available Specifications</h4>
-                        <table class="w-full text-sm">
-                            <tr><td>Width Range:</td><td>12mm - 1600mm</td></tr>
-                            <tr><td>Thickness:</td><td>12-50 microns</td></tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quality & Compliance -->
-    <section id="quality" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Quality & Compliance</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Rigorous quality control and compliance standards</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Material Traceability</h3>
-                    <p class="text-gray-600">Complete batch tracking from raw materials to finished products</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-ruler"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Dimensional Tolerance</h3>
-                    <p class="text-gray-600">Precision manufacturing with tight tolerance controls</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-clipboard-check"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Batch QC Testing</h3>
-                    <p class="text-gray-600">Every batch tested for quality and consistency</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">RoHS/REACH Compliant</h3>
-                    <p class="text-gray-600">Environmental compliance where applicable</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Non-Hazardous Components</h3>
-                    <p class="text-gray-600">All products are non-hazardous plastic components only</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">ISO Standards</h3>
-                    <p class="text-gray-600">Manufacturing processes follow international standards</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Who We Serve -->
-    <section class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Industries We Serve</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Trusted by leading companies across multiple industries</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-mountain"></i>
-                    </div>
-                    <h3 class="font-semibold">Mining</h3>
-                </div>
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-hammer"></i>
-                    </div>
-                    <h3 class="font-semibold">Quarrying</h3>
-                </div>
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <h3 class="font-semibold">Construction</h3>
-                </div>
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-cog"></i>
-                    </div>
-                    <h3 class="font-semibold">OEMs</h3>
-                </div>
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <h3 class="font-semibold">Packaging</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">About Supreme Group</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">A legacy of precision manufacturing with a vision for the future</p>
-            </div>
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-semibold mb-4 text-corporate-blue">Supreme Laminations</h3>
-                    <p class="text-gray-600 mb-4">Our legacy partnership firm with decades of experience in precision manufacturing and lamination processes.</p>
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-corporate-blue rounded-full mr-3"></div>
-                            <span>Established manufacturing expertise</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-corporate-blue rounded-full mr-3"></div>
-                            <span>Proven track record in industrial components</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-semibold mb-4 text-safety-green">Ananya Engineered Industrial Components & Pay Systems LLP</h3>
-                    <p class="text-gray-600 mb-4">Our parent holding company, positioned for future growth in industrial components and internal pay systems development.</p>
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-safety-green rounded-full mr-3"></div>
-                            <span>Modern corporate structure</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-safety-green rounded-full mr-3"></div>
-                            <span>Future-ready for technology integration</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Client Testimonials -->
-    <section id="clients" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Trusted by Industry Leaders</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Our clients rely on us for consistent quality and reliable supply</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 font-semibold">Client Logo 1</span>
-                </div>
-                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 font-semibold">Client Logo 2</span>
-                </div>
-                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 font-semibold">Client Logo 3</span>
-                </div>
-                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 font-semibold">Client Logo 4</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Band -->
-    <section class="py-16 bg-corporate-blue">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">Looking for consistent supply?</h2>
-            <p class="text-blue-100 mb-8 max-w-2xl mx-auto">Get in touch with our team for custom quotes and technical specifications</p>
-            <a href="#contact" class="bg-white text-corporate-blue px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
-                Get Quote Now
             </a>
-        </div>
-    </section>
 
-    <!-- Contact & RFQ Form -->
-    <section id="contact" class="py-20 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Request for Quote</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Tell us about your requirements and we'll get back to you with a detailed quote</p>
+            <!-- Nav -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#products"   class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Shock Tube Products</a>
+                <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Films &amp; Yarn</a>
+                <a href="#quality"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
+                <a href="#clients"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Clients</a>
+                <a href="#about"      class="text-charcoal hover:text-corporate-blue transition-colors font-bold">About</a>
+                <a href="#contact"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Contact</a>
+            </nav>
+
+            <!-- Mobile menu button -->
+            <button class="md:hidden">
+                <i class="fas fa-bars text-charcoal"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="relative">
+    <img src="./assets/special-bg.png" alt="Background" class="w-full h-auto block"/>
+
+    <!-- CTAs -->
+    <div class="absolute z-10 right-4 sm:right-8 lg:right-16 top-20 sm:top-28 lg:top-36 flex flex-col sm:flex-row gap-4 items-stretch">
+        <a href="#contact" class="bg-corporate-blue text-white px-8 py-5 sm:px-10 sm:py-5 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl">Request a Quote</a>
+        <a id="datasheetsBtn" href="https://drive.google.com/file/d/1z-Y3UgjmQ7h-7QBsi0lGwjw2-Cv0mcHO/view?usp=share_link" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 rounded-xl px-8 py-5 sm:px-10 sm:py-5 font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg text-lg sm:text-xl" role="button">
+            <i class="fa-solid fa-file-pdf text-xl sm:text-2xl"></i>
+            <span>Product Datasheet</span>
+        </a>
+    </div>
+
+    <!-- Glass headline card -->
+    <div class="max-w-4xl mx-auto -mt-28 mb-16 px-4 sm:px-6 lg:px-8">
+        <div class="rounded-2xl shadow-2xl px-10 py-14 bg-white/30 backdrop-blur-xl border border-white/40">
+            <div class="text-center">
+                <h1 class="text-5xl lg:text-7xl font-extrabold text-charcoal mb-8 leading-tight">
+                    Industrial Precision.<br/>Consistent Supply.
+                </h1>
+                <p class="text-2xl text-gray-800 max-w-3xl mx-auto">Serving India's Industrial Explosive Sector With Pride.</p>
             </div>
-            <form class="bg-white p-8 rounded-lg shadow-md">
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Name *</label>
-                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="products" class="py-20 relative bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.10),transparent_60%)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Non-Electric Detonator Housings</h3>
+                    <p class="text-gray-700 text-sm">Outer Housing, Precision Moulded For Commercial Explosives.</p>
+                </div>
+                <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
+            </div>
+
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">STL Connectors & Sleeves</h3>
+                    <p class="text-gray-700 text-sm">High Precision Connectors For Industrial Applications.</p>
+                </div>
+                <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
+            </div>
+
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Cast Booster Cups</h3>
+                    <p class="text-gray-700 text-sm">Customised Specifications For Durability.</p>
+                </div>
+                <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
+            </div>
+
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Customise Moulded Components</h3>
+                    <p class="text-gray-700 text-sm">Crafted With Precision For Export Grade.</p>
+                </div>
+                <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Films & Yarn Section -->
+<section id="films-yarn" class="relative py-20 bg-cover bg-center" style="background-image:url('./assets/829BDC6D-593F-433C-9D06-33EEC5289B54.PNG');">
+    <div class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white drop-shadow mb-4">BOPP/Polyester Films &amp; PP Yarn</h2>
+            <p class="text-gray-100 max-w-2xl mx-auto drop-shadow">Precision High-Quality Films &amp; Fibrillated Yarn</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12 items-stretch">
+            <div class="h-full flex flex-col rounded-2xl p-8 bg-white/20 backdrop-blur-xl ring-1 ring-white/30 border border-white/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)]">
+                <h3 class="text-2xl font-semibold text-white mb-4">Fibrillated PP Yarn</h3>
+                <ul class="text-white/90 leading-relaxed space-y-2 mb-6 list-disc pl-5">
+                    <li>Custom tensile strength braid reinforcement for durable use.</li>
+                    <li>Flexible, abrasion-resistant wrapping suitable for high-speed braiding lines.</li>
+                    <li>Resistant to chemicals and UV for long-term outdoor storage and field use.</li>
+                    <li>Maintains flexibility in low-temperature environments.</li>
+                    <li>Available in customised spool configurations.</li>
+                    <li>Precisely wound for optimal handling and consistent feed.</li>
+                </ul>
+                <div class="mt-auto bg-white/30 backdrop-blur-md p-4 rounded">
+                    <h4 class="font-semibold mb-2 text-white">Typical Specifications</h4>
+                    <table class="w-full text-sm text-white/90">
+                        <tr><td>Denier Range:</td><td class="text-right">500 – 8000</td></tr>
+                        <tr><td>GPD / Tenacity:</td><td class="text-right">4.0 – 5.0</td></tr>
+                        <tr><td>Elongation:</td><td class="text-right">8.0 – 25.0</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="h-full flex flex-col rounded-2xl p-8 bg-white/20 backdrop-blur-xl ring-1 ring-white/30 border border-white/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)]">
+                <h3 class="text-2xl font-semibold text-white mb-4">Slitted BOPP/Polyester Films</h3>
+                <ul class="text-white/90 leading-relaxed space-y-2 mb-6 list-disc pl-5">
+                    <li>Spiral-wrapped protective layer for strength and integrity.</li>
+                    <li>Moisture-resistant barrier against humidity and ingress.</li>
+                    <li>Intermediate jacket between braid and sheath.</li>
+                    <li>Maintains dimensional stability for uniform velocity.</li>
+                    <li>Precise slit widths for minimal waste.</li>
+                    <li>Antistatic properties for ESD prevention.</li>
+                    <li>Stable static-control across conditions.</li>
+                    <li>Reduces dust attraction during processing.</li>
+                </ul>
+                <div class="mt-auto bg-white/30 backdrop-blur-md p-4 rounded">
+                    <h4 class="font-semibold mb-2 text-white">Available Specifications</h4>
+                    <table class="w-full text-sm text-white/90">
+                        <tr><td>Width Range:</td><td class="text-right">8mm – 1600mm</td></tr>
+                        <tr><td>Thickness:</td><td class="text-right">12 – 50 microns</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Curved top separator -->
+<div class="absolute -top-[1px] left-0 right-0 overflow-hidden leading-none z-0">
+    <svg class="block w-full h-[72px] text-white" viewBox="0 0 1440 72" preserveAspectRatio="none">
+        <path fill="currentColor" d="M0,64 C240,16 480,16 720,48 C960,80 1200,80 1440,48 L1440,0 L0,0 Z"></path>
+    </svg>
+</div>
+
+<!-- Industries We Serve -->
+<section id="industries" class="relative py-20 bg-cover bg-center" style="background-image:url('./assets/10C3658C-062D-43D9-AA07-A2F2F579DED0.PNG');">
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent z-0"></div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent z-0"></div>
+    <div class="absolute inset-0 bg-black/35"></div>
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.22),transparent_60%)]"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white drop-shadow-md">Industries We Serve</h2>
+            <p class="mt-3 text-white/90 drop-shadow">Trusted by leading companies across multiple industries</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8">
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-mountain text-3xl text-[#1F6FEB] drop-shadow"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Mining</h3>
+            </div>
+
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-hammer text-3xl text-[#1F6FEB] drop-shadow"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Quarrying</h3>
+            </div>
+
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-building text-3xl text-[#1F6FEB] drop-shadow"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Construction</h3>
+            </div>
+
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-cog text-3xl text-[#1F6FEB] drop-shadow"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Specialised Industrial<br class="hidden md:block"/> Applications</h3>
+            </div>
+
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-box text-3xl text-[#1F6FEB] drop-shadow"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Packaging</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto space-y-10">
+            <div class="rounded-2xl shadow-2xl p-8 lg:p-10 bg-white/30 backdrop-blur-xl border border-white/40">
+                <h3 class="text-2xl font-semibold mb-4 text-corporate-blue">Supreme Laminations</h3>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Supreme Lamination was established under the leadership of Mr. Ajeet Lal with the objective of manufacturing and supplying reliable industrial components that meet the specific needs of customers across India. The company began its journey with a modest setup and a focused product range, operating with the principle that consistent quality and timely delivery are the keys to building trust in the market.
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    From the initial stages, Mr. Ajeet Lal has been personally involved in all aspects of the business, from evaluating raw material quality, supervising manufacturing processes, and ensuring precision in moulding, to managing logistics and responding to urgent customer requirements. This hands-on management style has allowed the company to maintain strict control over quality and delivery schedules, even in challenging circumstances.
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Supreme Lamination operates with advanced injection moulding and blow moulding machines, enabling the production of a wide variety of precision components. The company’s product range serves multiple industrial sectors, where durability, dimensional accuracy, and consistent performance are essential. Every product is subject to quality checks at various stages, ensuring compliance with customer specifications and industry standards.
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                    Looking ahead, Supreme Lamination aims to strengthen its manufacturing capabilities, explore new product lines, and expand its reach to serve a wider market. While the company continues to adapt to changing market demands, it remains committed to the three core principles laid down by Mr. Ajeet Lal: integrity, reliability, and delivering products that meet or exceed customer expectations.
+                </p>
+            </div>
+
+            <div class="rounded-2xl shadow-xl p-8 lg:p-10 bg-white">
+                <h3 class="text-2xl font-semibold mb-6 text-[#009245]">
+                    Ananya Engineered Industrial Components &amp; Pay Systems LLP.
+                </h3>
+
+                <div class="grid lg:grid-cols-5 gap-8 items-start">
+                    <div class="lg:col-span-3 order-2 lg:order-1">
+                        <p class="text-gray-700 leading-relaxed mb-6">
+                            Alongside our manufacturing expertise, we design and develop custom software tools, workflow platforms,
+                            and business solutions that enhance operational efficiency and enable seamless commercial processes.
+                            With a focus on innovation, quality, and reliability, we serve diverse industrial sectors across India
+                            and global markets.
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                            <li>Custom software tools and platforms for workflow automation.</li>
+                            <li>Platforms for streamlining internal operations, vendor management, and process tracking.</li>
+                        </ul>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Company *</label>
-                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+
+                    <div class="lg:col-span-2 order-1 lg:order-2">
+                        <div class="rounded-xl ring-1 ring-gray-200 shadow-md overflow-hidden bg-white">
+                            <iframe id="ananyaLogoFrame" src="logo.html#animatedLogo" title="Ananya LLP animated logo" class="w-full h-[320px] block" loading="lazy" style="border:0; overflow:hidden;" scrolling="no"></iframe>
+                        </div>
                     </div>
                 </div>
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Email *</label>
-                        <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+            </div>
+
+            <!-- CTA Band -->
+            <section class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-corporate-blue py-16 text-center">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-bold text-white mb-4">Looking for consistent supply?</h2>
+                    <p class="text-blue-100 mb-8 max-w-2xl mx-auto">Get in touch with our team for custom quotes and technical specifications</p>
+                    <a href="#contact" class="bg-white text-corporate-blue px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">Get Quote Now</a>
+                </div>
+            </section>
+
+            <!-- Contact & RFQ Form -->
+            <section id="contact" class="py-20 relative">
+                <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.08),transparent_60%)]"></div>
+
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-3">Request for Quote</h2>
+                        <p class="text-gray-600 max-w-2xl mx-auto">Tell us about your requirements and we'll get back to you with a detailed quote</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Phone *</label>
-                        <input type="tel" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+
+                    <div class="rounded-2xl p-6 sm:p-8 lg:p-10 bg-white/18 backdrop-blur-2xl ring-1 ring-white/40 border border-white/20 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.35)]">
+                        <form action="https://formspree.io/f/xvgqlyvq" method="POST" enctype="multipart/form-data" class="space-y-6">
+                            <input type="hidden" name="_subject" value="New RFQ — Supreme Group"/>
+                            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off"/>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="name">Name *</label>
+                                    <input id="name" name="name" type="text" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="company">Company *</label>
+                                    <input id="company" name="company" type="text" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="email">Email *</label>
+                                    <input id="email" name="email" type="email" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="phone">Phone *</label>
+                                    <input id="phone" name="phone" type="tel" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="item">Item of Interest</label>
+                                    <select id="item" name="item" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
+                                        <option value="">Select Product</option>
+                                        <option>Non-Electric Detonator Housings</option>
+                                        <option>STL Connectors & Sleeves</option>
+                                        <option>Booster Cups</option>
+                                        <option>Custom Moulded Parts</option>
+                                        <option>Fibrillated PP Yarn</option>
+                                        <option>Slitted BOPP Films</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="location">Country/State</label>
+                                    <input id="location" name="location" type="text" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal mb-2" for="details">Quantity & Specifications</label>
+                                <textarea id="details" name="details" rows="4" placeholder="Please provide quantity requirements and technical specifications..." class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal mb-2" for="file_link">Link to drawings/specifications (Google Drive/Dropbox)</label>
+                                <input id="file_link" name="file_link" type="url" placeholder="https://drive.google.com/…" pattern="https?://.*" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                <p class="text-xs text-gray-600/90 mt-1">Make sure sharing is set to <em>Anyone with the link – Viewer</em>.</p>
+                            </div>
+
+                            <label class="flex items-center">
+                                <input type="checkbox" name="want_datasheets" value="yes" class="mr-3 accent-corporate-blue"/>
+                                <span class="text-sm text-charcoal">Send me product datasheets</span>
+                            </label>
+
+                            <button type="submit" class="w-full bg-corporate-blue text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg">Submit RFQ</button>
+                        </form>
                     </div>
                 </div>
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Item of Interest</label>
-                        <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
-                            <option>Select Product</option>
-                            <option>Non-Electric Detonator Housings</option>
-                            <option>STL Connectors & Sleeves</option>
-                            <option>Booster Cups</option>
-                            <option>Custom Moulded Parts</option>
-                            <option>Fibrillated PP Yarn</option>
-                            <option>Slitted BOPP Films</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">City/State</label>
-                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-charcoal mb-2">Quantity & Specifications</label>
-                    <textarea rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" placeholder="Please provide quantity requirements and technical specifications..."></textarea>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-charcoal mb-2">File Upload</label>
-                    <input type="file" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
-                    <p class="text-xs text-gray-500 mt-1">Upload technical drawings, specifications, or reference documents</p>
-                </div>
-                <div class="mb-6">
-                    <label class="flex items-center">
-                        <input type="checkbox" class="mr-3 text-corporate-blue">
-                        <span class="text-sm text-charcoal">Send me product datasheets</span>
-                    </label>
-                </div>
-                <button type="submit" class="w-full bg-corporate-blue text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                    Submit RFQ
+            </section>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Frequently Asked Questions</h2>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-white border border-gray-200 rounded-lg">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                    <span class="font-semibold text-charcoal"> How do you ensure timely delivery, even for urgent requirements?</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
                 </button>
-            </form>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Frequently Asked Questions</h2>
+                <div class="accordion-content px-6 pb-6">
+                    <p class="text-gray-600">We follow a well-coordinated production and dispatch schedule, supported by strong vendor relationships and optimized logistics planning, to meet even the most urgent timelines.</p>
+                </div>
             </div>
-            <div class="space-y-4">
-                <div class="bg-white border border-gray-200 rounded-lg">
-                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                        <span class="font-semibold text-charcoal">What are your typical lead times?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-6">
-                        <p class="text-gray-600">Standard products: 2-3 weeks. Custom components: 4-6 weeks depending on complexity. Rush orders available with premium pricing.</p>
-                    </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                    <span class="font-semibold text-charcoal">How do you manage supply efficiency without warehouses in multiple states?</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                </button>
+                <div class="accordion-content px-6 pb-6">
+                    <p class="text-gray-600">Our supply chain model is designed for direct-to-client efficiency, allowing us to ship fresh batches straight from production, ensuring speed and reduced storage costs.</p>
                 </div>
-                <div class="bg-white border border-gray-200 rounded-lg">
-                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                        <span class="font-semibold text-charcoal">What are your minimum order quantities?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-6">
-                        <p class="text-gray-600">MOQs vary by product. Standard components: 1000 pieces minimum. Custom moulded parts: 5000 pieces minimum. Films and yarn: 500kg minimum.</p>
-                    </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                    <span class="font-semibold text-charcoal">How does Supreme Group maintain high production capacity across its product range?</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                </button>
+                <div class="accordion-content px-6 pb-6">
+                    <p class="text-gray-600">We operate with flexible production lines and precision tooling systems, enabling us to handle large volumes while maintaining quality and product consistency.</p>
                 </div>
-                <div class="bg-white border border-gray-200 rounded-lg">
-                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                        <span class="font-semibold text-charcoal">Do you offer customization services?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-6">
-                        <p class="text-gray-600">Yes, we specialize in custom moulded parts. Our engineering team can work with your specifications to develop components that meet your exact requirements.</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 rounded-lg">
-                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                        <span class="font-semibold text-charcoal">What compliance certifications do you maintain?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-6">
-                        <p class="text-gray-600">We maintain ISO quality standards and RoHS/REACH compliance where applicable. All our products are non-hazardous plastic components with full material traceability.</p>
-                    </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
+                    <span class="font-semibold text-charcoal">What quality control measures ensure consistency and reliability?</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                </button>
+                <div class="accordion-content px-6 pb-6">
+                    <p class="text-gray-600">Every batch undergoes rigorous inspection at multiple stages, with testing protocols aligned to industry standards and tailored to client-specific requirements. All our products are non-hazardous plastic components with full material traceability.</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="bg-charcoal text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Footer -->
+<footer class="text-white w-full">
+    <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-[#111315]/95 backdrop-blur-xl ring-1 ring-white/10 shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.5)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
                     <h3 class="text-2xl font-bold mb-4">Supreme Group</h3>
-                    <p class="text-gray-300 mb-4">Precision components and industrial films for reliable supply chains.</p>
+                    <p class="text-white/80 mb-4">Precision Films & Industrial Components For Reliable Supply Chains.</p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fab fa-whatsapp text-2xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fas fa-phone text-2xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fas fa-envelope text-2xl"></i>
-                        </a>
+                        <a href="#" class="text-white/80 hover:text-white"><i class="fab fa-whatsapp text-2xl"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white"><i class="fas fa-phone text-2xl"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white"><i class="fas fa-envelope text-2xl"></i></a>
                     </div>
                 </div>
+
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Contact Information</h4>
-                    <div class="space-y-2 text-gray-300">
-                        <p><i class="fas fa-map-marker-alt mr-2"></i>Noida, Uttar Pradesh</p>
-                        <p><i class="fas fa-map-marker-alt mr-2"></i>Mathura, Uttar Pradesh</p>
+                    <div class="space-y-2 text-white/80">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Ghaziabad (Delhi-NCR), Uttar Pradesh</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>IIDC KOSI KOTWAN - Mathura, Uttar Pradesh</p>
                         <p><i class="fas fa-envelope mr-2"></i>info@supremegroup.in</p>
-                        <p><i class="fas fa-phone mr-2"></i>+91 XXXXX XXXXX</p>
+                        <p><i class="fas fa-phone mr-2"></i>+91-0120-3670745</p>
                     </div>
                 </div>
+
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <div class="space-y-2">
-                        <a href="#products" class="block text-gray-300 hover:text-white">Products</a>
-                        <a href="#films-yarn" class="block text-gray-300 hover:text-white">Films & Yarn</a>
-                        <a href="#quality" class="block text-gray-300 hover:text-white">Quality</a>
-                        <a href="#contact" class="block text-gray-300 hover:text-white">Contact</a>
+                        <a href="#products" class="block text-white/80 hover:text-white">Products</a>
+                        <a href="#films-yarn" class="block text-white/80 hover:text-white">Films & Yarn</a>
+                        <a href="#quality" class="block text-white/80 hover:text-white">Quality</a>
+                        <a href="#contact" class="block text-white/80 hover:text-white">Contact</a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-700 mt-12 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-300 text-sm">© 2024 Supreme Group. All rights reserved.</p>
-                    <p class="text-gray-400 text-xs mt-4 md:mt-0 max-w-md text-center md:text-right">
-                        We manufacture non-hazardous plastic components; we do not handle explosive substances.
-                    </p>
-                </div>
+
+            <div class="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-white/70 text-sm">© 2025 Supreme Group. All rights reserved.</p>
+                <p class="text-white/60 text-xs mt-4 md:mt-0 max-w-md text-center md:text-right">We manufacture non-hazardous plastic components; we do not handle explosive substances.</p>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+<script>
+    (() => {
+      // Smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          const href = a.getAttribute('href');
+          if (href && href.length > 1) {
+            const target = document.querySelector(href);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+      });
+
+      // Accordion
+      window.toggleAccordion = (button) => {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('i');
+
+        document.querySelectorAll('.accordion-content').forEach(item => {
+          if (item !== content) {
+            item.classList.remove('active');
+            const ico = item.previousElementSibling?.querySelector('i');
+            if (ico) ico.style.transform = 'rotate(0deg)';
+          }
         });
 
-        // Accordion functionality
-        function toggleAccordion(button) {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('i');
-           
-            // Close all other accordions
-            document.querySelectorAll('.accordion-content').forEach(item => {
-                if (item !== content) {
-                    item.classList.remove('active');
-                    item.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
-                }
-            });
-           
-            // Toggle current accordion
-            content.classList.toggle('active');
-            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        content.classList.toggle('active');
+        if (icon) {
+          icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
+      };
 
-        // Form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your inquiry! We will get back to you within 24 hours.');
+      // Datasheets button
+      const datasheetsBtn = document.getElementById('datasheetsBtn');
+      if (datasheetsBtn) {
+        datasheetsBtn.addEventListener('click', () => {
+          // optional tracking
         });
+      }
+    })();
+</script>
 
-        // Product Datasheets button
-        document.querySelector('button:contains("Product Datasheets")').addEventListener('click', function() {
-            alert('Product datasheets will be sent to your email. Please fill out the contact form to receive them.');
-        });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e18076d177595a',t:'MTc1NTAxNzc0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<!-- keep (external) -->
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e18076d177595a',t:'MTc1NTAxNzc0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
 </html>
