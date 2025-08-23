@@ -61,6 +61,36 @@
           width:auto;height:135%;object-fit:cover;clip-path:ellipse(47% 42% at 50% 50%);
           transform:translateY(1px);user-select:none;pointer-events:none;
         }
+
+        /* ===== Mobile polish (≤640px) ===== */
+@media (max-width: 640px){
+  /* Logo */
+  .logo-clip{ height:3.25rem; width:6.75rem; border-radius:22px; }
+  .logo-clip img{ height:120%; }
+
+  /* Brand text sizes */
+  .brand-title{ font-size:1.35rem; line-height:1.1; }
+  .brand-sub{ font-size:.80rem; }
+
+  /* Hero image: a bit taller and better crop on phone */
+  .hero-img{
+    height:70vh; min-height:560px;
+    object-position: 60% 35%;
+  }
+
+  /* CTA block: centered under header, not covering machine */
+  .cta-wrap{
+    left:50%; right:auto; transform:translateX(-50%);
+    top: calc(72px + env(safe-area-inset-top, 0px));
+  }
+  .cta-btn{ width:min(88vw, 360px); }
+
+  /* Headline card: lighter + comfy margins on phone */
+  .glass-card{ background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); }
+  .glass-card h1{ font-size:1.6rem; }
+  .glass-card p{  font-size:1rem; }
+}
+
     </style>
 </head>
 
@@ -75,14 +105,15 @@
           <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
         </span>
                 <div class="leading-tight">
-                    <div class="font-bold">
-                        <span class="text-corporate-blue text-3xl">Supreme</span>
-                        <span class="text-safety-green text-3xl">Group</span>
+                    <div class="font-bold brand-title">
+                        <span class="text-corporate-blue text-3xl sm:text-3xl">Supreme</span>
+                        <span class="text-safety-green text-3xl sm:text-3xl">Group</span>
                     </div>
-                    <p class="text-sm md:text-base text-gray-700/90 italic -mt-0.5">
+                    <p class="brand-sub text-sm md:text-base text-gray-700/90 italic -mt-0.5">
                         Delivering Excellence Since 2007
                     </p>
                 </div>
+
             </a>
 
             <nav class="hidden md:flex space-x-8">
@@ -99,25 +130,28 @@
 <!-- HERO -->
 <section class="relative overflow-hidden">
     <img src="./assets/special-bg.png" alt="Background"
-         class="w-full h-[86vh] min-h-[640px] object-cover object-center"/>
+         class="hero-img w-full h-[86vh] min-h-[640px] object-cover object-center"/>
+
 
     <!-- CTAs -->
     <div class="absolute z-20 right-4 sm:right-8 lg:right-16 top-10 sm:top-14 lg:top-20
-              flex flex-col sm:flex-row gap-4 items-stretch">
+            flex flex-col sm:flex-row gap-4 items-stretch cta-wrap">
         <a href="#contact"
-           class="bg-corporate-blue text-white px-8 py-5 sm:px-10 sm:py-5 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl">
+           class="cta-btn bg-corporate-blue text-white px-8 py-5 sm:px-10 sm:py-5 rounded-xl font-semibold
+            hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl text-center">
             Request a Quote
         </a>
 
-        <!-- open the local PDF in-browser in a new tab -->
-        <a id="datasheetsBtn"
-           href="./assets/product-datasheet.pdf#view=FitH&toolbar=1"
+        <a id="datasheetsBtn" href="./assets/product-datasheet.pdf#view=FitH&toolbar=1"
            target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 rounded-xl px-8 py-5 sm:px-10 sm:py-5 font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg text-lg sm:text-xl">
+           class="cta-btn inline-flex items-center justify-center gap-3 rounded-xl px-8 py-5 sm:px-10 sm:py-5
+            font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg
+            text-lg sm:text-xl">
             <i class="fa-solid fa-file-pdf text-xl sm:text-2xl"></i>
             <span>Product Datasheet</span>
         </a>
     </div>
+
 
     <!-- headline card -->
     <div class="absolute z-20 right-4 sm:right-8 lg:right-14 bottom-1 sm:bottom-2 lg:bottom-4
