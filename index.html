@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Supreme Group - Precision Components & Industrial Film</title>
@@ -23,170 +22,62 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
 
     <style>
-
-        /* Ultra-clean glass + Safari-friendly */
-
-.glass-card {
-  position: relative;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.06); /* much lighter */
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  backdrop-filter: blur(30px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.35);
-}
-
-/* “Printed on the machine” plate */
-.machine-plate {
-  position: absolute;
-  right: clamp(12px, 7vw, 72px);
-  bottom: clamp(14px, 6vh, 64px);
-  width: min(720px, 48vw);
-  padding: clamp(16px, 2.2vw, 28px) clamp(18px, 2.6vw, 36px);
-  border-radius: 20px;
-
-  /* make it look like ink/plastic on the surface rather than a box */
-  background: radial-gradient(120% 160% at 90% 10%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 60%, transparent 100%);
-  border: 1px solid rgba(0,0,0,0.06);
-  mix-blend-mode: multiply;              /* <-- key to “printed” look */
-  backdrop-filter: blur(1px) saturate(105%);
-  -webkit-backdrop-filter: blur(1px) saturate(105%);
-  box-shadow: 0 18px 60px -24px rgba(0,0,0,0.35); /* contact shadow */
-  transform-origin: 85% 100%;
-  transform: perspective(1200px) rotateX(6deg) rotateY(-18deg) skewX(-4deg);
-}
-
-/* Slightly softer on very large screens so it doesn’t dominate */
-@media (min-width: 1440px) {
-  .machine-plate { transform: perspective(1400px) rotateX(5deg) rotateY(-16deg) skewX(-4deg); }
-}
-
-/* Simpler, legible fallback on mobile */
-@media (max-width: 768px) {
-  .machine-plate {
-    position: static;
-    width: auto;
-    margin: 14px 16px 0 16px;
-    mix-blend-mode: normal;
-    transform: none;
-    background: rgba(255,255,255,0.35);
-    border: 1px solid rgba(255,255,255,0.5);
-  }
-}
-
-/* Engraved/printed type treatment */
-.engraved {
-  color: #1f2937; /* slate-800 */
-  line-height: 1.12;
-  letter-spacing: 0.2px;
-  /* slight ink spread + highlight to mimic print/emboss */
-  text-shadow:
-    0.5px 0.5px 0 rgba(255,255,255,0.35),   /* top-left light catch */
-   -0.75px -0.75px 0 rgba(0,0,0,0.15);      /* inner dark edge */
-}
-.engraved-sub {
-  color: rgba(17,24,39,0.85); /* slate-900 at 85% */
-  text-shadow:
-    0.5px 0.5px 0 rgba(255,255,255,0.25),
-   -0.5px -0.5px 0 rgba(0,0,0,0.12);
-  letter-spacing: 0.15px;
-}
-
-/* nudge the CTAs up a touch so they don’t cover the machine */
-.hero-ctas {
-  top: clamp(7rem, 10vh, 10rem); /* was ~top-28/36; now a bit higher */
-}
-
-/* Gentle inner highlight */
-.glass-card::before {
-  content: "";
-  position: absolute; inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(100% 80% at 20% 0%, rgba(255,255,255,.2), transparent 70%);
-  pointer-events: none;
-}
-
-
-/* Gentle highlight only (less “fog”) */
-.glass-card::before{
-  content:"";
-  position:absolute; inset:0; border-radius:inherit;
-  background: radial-gradient(140% 80% at 0% 0%, rgba(255,255,255,.28), transparent 50%);
-  pointer-events:none;
-  opacity:.45;
-}
-
-/* Fallback if blur is unavailable */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
-  .glass-card{
-    background: rgba(255,255,255,.42);
-    border: 1px solid rgba(255,255,255,.28);
-  }
-  .glass-card::before{ opacity:.30; }
-}
-
-        .hero-bg{
-          background:
-            linear-gradient(135deg, rgba(31,111,235,0.05) 0%, rgba(18,183,106,0.05) 100%),
-            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23E5E7EB" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        /* ultra-clean glass card */
+        .glass-card{
+          position:relative;border-radius:16px;
+          background:rgba(255,255,255,.06);
+          -webkit-backdrop-filter:blur(30px) saturate(180%);
+          backdrop-filter:blur(30px) saturate(180%);
+          border:1px solid rgba(255,255,255,.18);
+          box-shadow:0 15px 40px -10px rgba(0,0,0,.35);
+        }
+        .glass-card::before{
+          content:"";position:absolute;inset:0;border-radius:inherit;
+          background:radial-gradient(140% 80% at 0% 0%, rgba(255,255,255,.28), transparent 50%);
+          pointer-events:none;opacity:.45;
+        }
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+          .glass-card{background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.28)}
+          .glass-card::before{opacity:.30}
         }
 
-        /* Sticky header glass */
         .sticky-header{
-          background: rgba(255,255,255,0.28);
-          -webkit-backdrop-filter: saturate(160%) blur(14px);
-          backdrop-filter: saturate(160%) blur(14px);
-          border-bottom: 1px solid rgba(255,255,255,0.35);
+          background:rgba(255,255,255,.28);
+          -webkit-backdrop-filter:saturate(160%) blur(14px);
+          backdrop-filter:saturate(160%) blur(14px);
+          border-bottom:1px solid rgba(255,255,255,.35);
         }
 
-        /* Accordion */
         .accordion-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
         .accordion-content.active{max-height:200px}
 
-        /* Logo pill */
         .logo-clip{
-          height: 4.75rem;
-          width:  9.5rem;
-          border-radius: 9999px;
-          background: rgba(255,255,255,.16);
-          border: 1px solid rgba(255,255,255,.45);
-          box-shadow:
-            0 10px 30px -10px rgba(0,0,0,.25),
-            inset 0 1px 0 rgba(255,255,255,.35);
-          overflow: hidden;
-          display:flex;
-          align-items:center;
-          justify-content:center;
+          height:4.75rem;width:9.5rem;border-radius:9999px;
+          background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.45);
+          box-shadow:0 10px 30px -10px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.35);
+          overflow:hidden;display:flex;align-items:center;justify-content:center;
         }
         .logo-clip img{
-          width:auto;
-          height:135%;
-          object-fit:cover;
-          clip-path: ellipse(47% 42% at 50% 50%);
-          transform: translateY(1px);
-          user-select:none;
-          pointer-events:none;
+          width:auto;height:135%;object-fit:cover;clip-path:ellipse(47% 42% at 50% 50%);
+          transform:translateY(1px);user-select:none;pointer-events:none;
         }
     </style>
 </head>
 
 <body class="bg-white text-charcoal">
-<!-- anchor for #top -->
 <div id="top"></div>
 
-<!-- Sticky Header -->
 <header class="sticky top-0 z-50 sticky-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
-            <!-- Left: Logo + Brand -->
             <a href="#top" class="flex items-center gap-4">
-          <span class="logo-clip">
-            <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
-          </span>
+        <span class="logo-clip">
+          <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
+        </span>
                 <div class="leading-tight">
                     <div class="font-bold">
                         <span class="text-corporate-blue text-3xl">Supreme</span>
-                        <span class="text-safety-green  text-3xl">Group</span>
+                        <span class="text-safety-green text-3xl">Group</span>
                     </div>
                     <p class="text-sm md:text-base text-gray-700/90 italic -mt-0.5">
                         Delivering Excellence Since 2007
@@ -194,45 +85,33 @@
                 </div>
             </a>
 
-            <!-- Nav -->
             <nav class="hidden md:flex space-x-8">
                 <a href="#products"   class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Shock Tube Products</a>
                 <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Films &amp; Yarn</a>
-                <!-- FIX: point “Quality” to existing #industries section -->
                 <a href="#industries" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
                 <a href="#about"      class="text-charcoal hover:text-corporate-blue transition-colors font-bold">About</a>
                 <a href="#contact"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Contact</a>
             </nav>
-
-            <!-- Mobile menu button -->
-            <button class="md:hidden">
-                <i class="fas fa-bars text-charcoal"></i>
-            </button>
         </div>
     </div>
 </header>
 
-<!-- Hero Section -->
-<!-- Hero Section (card pinned to the right, visible on load) -->
+<!-- HERO -->
 <section class="relative overflow-hidden">
-    <!-- Make the hero tall enough so the card is in view on first paint -->
-    <img
-            src="./assets/special-bg.png"
-            alt="Background"
-            class="w-full h-[86vh] min-h-[640px] object-cover object-center"
-    />
+    <img src="./assets/special-bg.png" alt="Background"
+         class="w-full h-[86vh] min-h-[640px] object-cover object-center"/>
 
-    <!-- CTAs (stay at the top-right) -->
     <!-- CTAs -->
-    <div class="absolute z-20 right-4 sm:right-8 lg:right-16
-            top-10 sm:top-14 lg:top-20
-            flex flex-col sm:flex-row gap-4 items-stretch">
+    <div class="absolute z-20 right-4 sm:right-8 lg:right-16 top-10 sm:top-14 lg:top-20
+              flex flex-col sm:flex-row gap-4 items-stretch">
         <a href="#contact"
            class="bg-corporate-blue text-white px-8 py-5 sm:px-10 sm:py-5 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl">
             Request a Quote
         </a>
+
+        <!-- open the local PDF in-browser in a new tab -->
         <a id="datasheetsBtn"
-           href="https://drive.google.com/file/d/1z-Y3UgjmQ7h-7QBsi0lGwjw2-Cv0mcHO/view?usp=share_link"
+           href="./assets/product-datasheet.pdf#view=FitH&toolbar=1"
            target="_blank" rel="noopener noreferrer"
            class="inline-flex items-center gap-3 rounded-xl px-8 py-5 sm:px-10 sm:py-5 font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg text-lg sm:text-xl">
             <i class="fa-solid fa-file-pdf text-xl sm:text-2xl"></i>
@@ -240,14 +119,9 @@
         </a>
     </div>
 
-
-    <!-- Glass headline card (right-aligned on desktop, centered on mobile) -->
-    <!-- Glass headline card — bottom-right, under CTAs, not covering machine -->
-    <!-- Glass headline card — lighter, centered text -->
-    <!-- Glass headline card — bottom-right, lighter and centered text -->
-    <div class="absolute z-20 right-4 sm:right-8 lg:right-14
-            bottom-1 sm:bottom-2 lg:bottom-4
-            w-[min(92vw,620px)] md:w-[560px] lg:w-[600px]">
+    <!-- headline card -->
+    <div class="absolute z-20 right-4 sm:right-8 lg:right-14 bottom-1 sm:bottom-2 lg:bottom-4
+              w-[min(92vw,620px)] md:w-[560px] lg:w-[600px]">
         <div class="glass-card px-8 sm:px-10 py-8 sm:py-10">
             <div class="text-center">
                 <h1 class="font-extrabold text-charcoal leading-tight mb-4 text-3xl sm:text-4xl lg:text-[40px]">
@@ -259,16 +133,9 @@
             </div>
         </div>
     </div>
-
-
-
-
-    <!-- Optional soft vignette so card pops more on bright areas -->
-    <div class="pointer-events-none absolute inset-0 z-10
-              bg-gradient-to-b from-transparent via-transparent to-black/0"></div>
 </section>
 
-<!-- Products Section -->
+<!-- PRODUCTS -->
 <section id="products" class="py-20 relative bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.10),transparent_60%)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -307,10 +174,9 @@
     </div>
 </section>
 
-<!-- Films & Yarn Section -->
+<!-- FILMS & YARN -->
 <section id="films-yarn" class="relative py-20 bg-cover bg-center" style="background-image:url('./assets/829BDC6D-593F-433C-9D06-33EEC5289B54.PNG');">
     <div class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
-
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl lg:text-4xl font-bold text-white drop-shadow mb-4"> BOPP/Polyester Films &amp; PP Yarn</h2>
@@ -362,14 +228,14 @@
     </div>
 </section>
 
-<!-- Curved top separator -->
+<!-- Curved separator -->
 <div class="absolute -top-[1px] left-0 right-0 overflow-hidden leading-none z-0">
     <svg class="block w-full h-[72px] text-white" viewBox="0 0 1440 72" preserveAspectRatio="none">
         <path fill="currentColor" d="M0,64 C240,16 480,16 720,48 C960,80 1200,80 1440,48 L1440,0 L0,0 Z"></path>
     </svg>
 </div>
 
-<!-- Industries We Serve -->
+<!-- INDUSTRIES -->
 <section id="industries" class="relative py-20 bg-cover bg-center" style="background-image:url('./assets/10C3658C-062D-43D9-AA07-A2F2F579DED0.PNG');">
     <div class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent z-0"></div>
     <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent z-0"></div>
@@ -383,35 +249,35 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8">
-            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
                 <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
                     <i class="fas fa-mountain text-3xl text-[#1F6FEB] drop-shadow"></i>
                 </div>
                 <h3 class="font-semibold text-white tracking-wide">Mining</h3>
             </div>
 
-            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
                 <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
                     <i class="fas fa-hammer text-3xl text-[#1F6FEB] drop-shadow"></i>
                 </div>
                 <h3 class="font-semibold text-white tracking-wide">Quarrying</h3>
             </div>
 
-            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
                 <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
                     <i class="fas fa-building text-3xl text-[#1F6FEB] drop-shadow"></i>
                 </div>
                 <h3 class="font-semibold text-white tracking-wide">Construction</h3>
             </div>
 
-            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
                 <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
                     <i class="fas fa-cog text-3xl text-[#1F6FEB] drop-shadow"></i>
                 </div>
                 <h3 class="font-semibold text-white tracking-wide">Specialised Industrial<br class="hidden md:block"/> Applications</h3>
             </div>
 
-            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-transform">
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
                 <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
                     <i class="fas fa-box text-3xl text-[#1F6FEB] drop-shadow"></i>
                 </div>
@@ -421,7 +287,7 @@
     </div>
 </section>
 
-<!-- About Section -->
+<!-- ABOUT + CONTACT -->
 <section id="about" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-5xl mx-auto space-y-10">
@@ -477,7 +343,7 @@
                 </div>
             </section>
 
-            <!-- Contact & RFQ Form -->
+            <!-- CONTACT / RFQ -->
             <section id="contact" class="py-20 relative">
                 <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.08),transparent_60%)]"></div>
 
@@ -544,7 +410,6 @@
                                 <p class="text-xs text-gray-600/90 mt-1">Make sure sharing is set to <em>Anyone with the link – Viewer</em>.</p>
                             </div>
 
-                            <!-- FIX: explicit label association -->
                             <div class="flex items-center">
                                 <input id="want_datasheets" type="checkbox" name="want_datasheets" value="yes" class="mr-3 accent-corporate-blue"/>
                                 <label for="want_datasheets" class="text-sm text-charcoal">Send me product datasheets</label>
@@ -559,7 +424,7 @@
     </div>
 </section>
 
-<!-- FAQ Section -->
+<!-- FAQ -->
 <section class="py-20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
@@ -568,7 +433,7 @@
         <div class="space-y-4">
             <div class="bg-white border border-gray-200 rounded-lg">
                 <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                    <span class="font-semibold text-charcoal"> How do you ensure timely delivery, even for urgent requirements?</span>
+                    <span class="font-semibold text-charcoal">How do you ensure timely delivery, even for urgent requirements?</span>
                     <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
                 </button>
                 <div class="accordion-content px-6 pb-6">
@@ -609,7 +474,7 @@
     </div>
 </section>
 
-<!-- Footer -->
+<!-- FOOTER -->
 <footer class="text-white w-full">
     <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-[#111315]/95 backdrop-blur-xl ring-1 ring-white/10 shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.5)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -639,7 +504,6 @@
                     <div class="space-y-2">
                         <a href="#products"   class="block text-white/80 hover:text-white">Products</a>
                         <a href="#films-yarn" class="block text-white/80 hover:text-white">Films & Yarn</a>
-                        <!-- FIX: footer link also points to #industries -->
                         <a href="#industries" class="block text-white/80 hover:text-white">Quality</a>
                         <a href="#contact"    class="block text-white/80 hover:text-white">Contact</a>
                     </div>
@@ -648,7 +512,9 @@
 
             <div class="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-white/70 text-sm">© 2025 Supreme Group. All rights reserved.</p>
-                <p class="text-white/60 text-xs mt-4 md:mt-0 max-w-md text-center md:text-right">We manufacture non-hazardous plastic components; we do not handle explosive substances.</p>
+                <p class="text-white/60 text-xs mt-4 md:mt-0 max-w-md text-center md:text-right">
+                    We manufacture non-hazardous plastic components; we do not handle explosive substances.
+                </p>
             </div>
         </div>
     </div>
@@ -674,7 +540,6 @@
       window.toggleAccordion = (button) => {
         const content = button.nextElementSibling;
         const icon = button.querySelector('i');
-
         document.querySelectorAll('.accordion-content').forEach(item => {
           if (item !== content) {
             item.classList.remove('active');
@@ -682,23 +547,12 @@
             if (ico) ico.style.transform = 'rotate(0deg)';
           }
         });
-
         content.classList.toggle('active');
         if (icon) {
           icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
       };
-
-      // Datasheets button (optional tracking hook)
-      const datasheetsBtn = document.getElementById('datasheetsBtn');
-      if (datasheetsBtn) {
-        datasheetsBtn.addEventListener('click', () => {});
-      }
     })();
-
 </script>
-
-<!-- keep (external) -->
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e18076d177595a',t:'MTc1NTAxNzc0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
