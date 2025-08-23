@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Supreme Group - Precision Components & Industrial Film</title>
@@ -22,13 +23,115 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
 
     <style>
+
+        /* Ultra-clean glass + Safari-friendly */
+
+.glass-card {
+  position: relative;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06); /* much lighter */
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.35);
+}
+
+/* “Printed on the machine” plate */
+.machine-plate {
+  position: absolute;
+  right: clamp(12px, 7vw, 72px);
+  bottom: clamp(14px, 6vh, 64px);
+  width: min(720px, 48vw);
+  padding: clamp(16px, 2.2vw, 28px) clamp(18px, 2.6vw, 36px);
+  border-radius: 20px;
+
+  /* make it look like ink/plastic on the surface rather than a box */
+  background: radial-gradient(120% 160% at 90% 10%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 60%, transparent 100%);
+  border: 1px solid rgba(0,0,0,0.06);
+  mix-blend-mode: multiply;              /* <-- key to “printed” look */
+  backdrop-filter: blur(1px) saturate(105%);
+  -webkit-backdrop-filter: blur(1px) saturate(105%);
+  box-shadow: 0 18px 60px -24px rgba(0,0,0,0.35); /* contact shadow */
+  transform-origin: 85% 100%;
+  transform: perspective(1200px) rotateX(6deg) rotateY(-18deg) skewX(-4deg);
+}
+
+/* Slightly softer on very large screens so it doesn’t dominate */
+@media (min-width: 1440px) {
+  .machine-plate { transform: perspective(1400px) rotateX(5deg) rotateY(-16deg) skewX(-4deg); }
+}
+
+/* Simpler, legible fallback on mobile */
+@media (max-width: 768px) {
+  .machine-plate {
+    position: static;
+    width: auto;
+    margin: 14px 16px 0 16px;
+    mix-blend-mode: normal;
+    transform: none;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+}
+
+/* Engraved/printed type treatment */
+.engraved {
+  color: #1f2937; /* slate-800 */
+  line-height: 1.12;
+  letter-spacing: 0.2px;
+  /* slight ink spread + highlight to mimic print/emboss */
+  text-shadow:
+    0.5px 0.5px 0 rgba(255,255,255,0.35),   /* top-left light catch */
+   -0.75px -0.75px 0 rgba(0,0,0,0.15);      /* inner dark edge */
+}
+.engraved-sub {
+  color: rgba(17,24,39,0.85); /* slate-900 at 85% */
+  text-shadow:
+    0.5px 0.5px 0 rgba(255,255,255,0.25),
+   -0.5px -0.5px 0 rgba(0,0,0,0.12);
+  letter-spacing: 0.15px;
+}
+
+/* nudge the CTAs up a touch so they don’t cover the machine */
+.hero-ctas {
+  top: clamp(7rem, 10vh, 10rem); /* was ~top-28/36; now a bit higher */
+}
+
+/* Gentle inner highlight */
+.glass-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(100% 80% at 20% 0%, rgba(255,255,255,.2), transparent 70%);
+  pointer-events: none;
+}
+
+
+/* Gentle highlight only (less “fog”) */
+.glass-card::before{
+  content:"";
+  position:absolute; inset:0; border-radius:inherit;
+  background: radial-gradient(140% 80% at 0% 0%, rgba(255,255,255,.28), transparent 50%);
+  pointer-events:none;
+  opacity:.45;
+}
+
+/* Fallback if blur is unavailable */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+  .glass-card{
+    background: rgba(255,255,255,.42);
+    border: 1px solid rgba(255,255,255,.28);
+  }
+  .glass-card::before{ opacity:.30; }
+}
+
         .hero-bg{
           background:
             linear-gradient(135deg, rgba(31,111,235,0.05) 0%, rgba(18,183,106,0.05) 100%),
             url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23E5E7EB" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
         }
 
-        /* ✅ Stronger glass, more see-through while scrolling */
+        /* Sticky header glass */
         .sticky-header{
           background: rgba(255,255,255,0.28);
           -webkit-backdrop-filter: saturate(160%) blur(14px);
@@ -40,10 +143,10 @@
         .accordion-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
         .accordion-content.active{max-height:200px}
 
-        /* ✅ Logo: refined “pill” + clipped PNG (no white corners), bigger & aligned */
+        /* Logo pill */
         .logo-clip{
-          height: 4.75rem;           /* ~h-19 — fills the 6rem header nicely */
-          width:  9.5rem;            /* elongated pill */
+          height: 4.75rem;
+          width:  9.5rem;
           border-radius: 9999px;
           background: rgba(255,255,255,.16);
           border: 1px solid rgba(255,255,255,.45);
@@ -57,11 +160,10 @@
         }
         .logo-clip img{
           width:auto;
-          height:135%;                /* zoom so the blue oval touches the pill vertically */
+          height:135%;
           object-fit:cover;
-          /* Trim the bitmap’s white edges so only the blue oval shows */
           clip-path: ellipse(47% 42% at 50% 50%);
-          transform: translateY(1px); /* micro-centering */
+          transform: translateY(1px);
           user-select:none;
           pointer-events:none;
         }
@@ -69,8 +171,10 @@
 </head>
 
 <body class="bg-white text-charcoal">
+<!-- anchor for #top -->
+<div id="top"></div>
 
-<!-- Sticky Header (glass + big clipped logo) -->
+<!-- Sticky Header -->
 <header class="sticky top-0 z-50 sticky-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
@@ -94,7 +198,8 @@
             <nav class="hidden md:flex space-x-8">
                 <a href="#products"   class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Shock Tube Products</a>
                 <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Films &amp; Yarn</a>
-                <a href="#quality"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
+                <!-- FIX: point “Quality” to existing #industries section -->
+                <a href="#industries" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
                 <a href="#about"      class="text-charcoal hover:text-corporate-blue transition-colors font-bold">About</a>
                 <a href="#contact"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Contact</a>
             </nav>
@@ -108,29 +213,59 @@
 </header>
 
 <!-- Hero Section -->
-<section class="relative">
-    <img src="./assets/special-bg.png" alt="Background" class="w-full h-auto block"/>
+<!-- Hero Section (card pinned to the right, visible on load) -->
+<section class="relative overflow-hidden">
+    <!-- Make the hero tall enough so the card is in view on first paint -->
+    <img
+            src="./assets/special-bg.png"
+            alt="Background"
+            class="w-full h-[86vh] min-h-[640px] object-cover object-center"
+    />
 
+    <!-- CTAs (stay at the top-right) -->
     <!-- CTAs -->
-    <div class="absolute z-10 right-4 sm:right-8 lg:right-16 top-20 sm:top-28 lg:top-36 flex flex-col sm:flex-row gap-4 items-stretch">
-        <a href="#contact" class="bg-corporate-blue text-white px-8 py-5 sm:px-10 sm:py-5 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl">Request a Quote</a>
-        <a id="datasheetsBtn" href="https://drive.google.com/file/d/1z-Y3UgjmQ7h-7QBsi0lGwjw2-Cv0mcHO/view?usp=share_link" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 rounded-xl px-8 py-5 sm:px-10 sm:py-5 font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg text-lg sm:text-xl" role="button">
+    <div class="absolute z-20 right-4 sm:right-8 lg:right-16
+            top-10 sm:top-14 lg:top-20
+            flex flex-col sm:flex-row gap-4 items-stretch">
+        <a href="#contact"
+           class="bg-corporate-blue text-white px-8 py-5 sm:px-10 sm:py-5 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl">
+            Request a Quote
+        </a>
+        <a id="datasheetsBtn"
+           href="https://drive.google.com/file/d/1z-Y3UgjmQ7h-7QBsi0lGwjw2-Cv0mcHO/view?usp=share_link"
+           target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-3 rounded-xl px-8 py-5 sm:px-10 sm:py-5 font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg text-lg sm:text-xl">
             <i class="fa-solid fa-file-pdf text-xl sm:text-2xl"></i>
             <span>Product Datasheet</span>
         </a>
     </div>
 
-    <!-- Glass headline card -->
-    <div class="max-w-4xl mx-auto -mt-28 mb-16 px-4 sm:px-6 lg:px-8">
-        <div class="rounded-2xl shadow-2xl px-10 py-14 bg-white/30 backdrop-blur-xl border border-white/40">
+
+    <!-- Glass headline card (right-aligned on desktop, centered on mobile) -->
+    <!-- Glass headline card — bottom-right, under CTAs, not covering machine -->
+    <!-- Glass headline card — lighter, centered text -->
+    <!-- Glass headline card — bottom-right, lighter and centered text -->
+    <div class="absolute z-20 right-4 sm:right-8 lg:right-14
+            bottom-1 sm:bottom-2 lg:bottom-4
+            w-[min(92vw,620px)] md:w-[560px] lg:w-[600px]">
+        <div class="glass-card px-8 sm:px-10 py-8 sm:py-10">
             <div class="text-center">
-                <h1 class="text-5xl lg:text-7xl font-extrabold text-charcoal mb-8 leading-tight">
+                <h1 class="font-extrabold text-charcoal leading-tight mb-4 text-3xl sm:text-4xl lg:text-[40px]">
                     Industrial Precision.<br/>Consistent Supply.
                 </h1>
-                <p class="text-2xl text-gray-800 max-w-3xl mx-auto">Serving India's Industrial Explosive Sector With Pride.</p>
+                <p class="text-base sm:text-lg lg:text-xl text-gray-900/90">
+                    Serving India's Industrial Explosive Sector With Pride.
+                </p>
             </div>
         </div>
     </div>
+
+
+
+
+    <!-- Optional soft vignette so card pops more on bright areas -->
+    <div class="pointer-events-none absolute inset-0 z-10
+              bg-gradient-to-b from-transparent via-transparent to-black/0"></div>
 </section>
 
 <!-- Products Section -->
@@ -178,7 +313,7 @@
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl lg:text-4xl font-bold text-white drop-shadow mb-4">BOPP/Polyester Films &amp; PP Yarn</h2>
+            <h2 class="text-3xl lg:text-4xl font-bold text-white drop-shadow mb-4"> BOPP/Polyester Films &amp; PP Yarn</h2>
             <p class="text-gray-100 max-w-2xl mx-auto drop-shadow">Precision High-Quality Films &amp; Fibrillated Yarn</p>
         </div>
 
@@ -349,7 +484,7 @@
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-10">
                         <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-3">Request for Quote</h2>
-                        <p class="text-gray-600 max-w-2xl mx-auto">Tell us about your requirements and we'll get back to you with a detailed quote</p>
+                        <p class="text-gray-600 max-w-2xl mx-auto">Tell us about your requirements, and we'll get back to you with a detailed quote</p>
                     </div>
 
                     <div class="rounded-2xl p-6 sm:p-8 lg:p-10 bg-white/18 backdrop-blur-2xl ring-1 ring-white/40 border border-white/20 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.35)]">
@@ -409,10 +544,11 @@
                                 <p class="text-xs text-gray-600/90 mt-1">Make sure sharing is set to <em>Anyone with the link – Viewer</em>.</p>
                             </div>
 
-                            <label class="flex items-center">
-                                <input type="checkbox" name="want_datasheets" value="yes" class="mr-3 accent-corporate-blue"/>
-                                <span class="text-sm text-charcoal">Send me product datasheets</span>
-                            </label>
+                            <!-- FIX: explicit label association -->
+                            <div class="flex items-center">
+                                <input id="want_datasheets" type="checkbox" name="want_datasheets" value="yes" class="mr-3 accent-corporate-blue"/>
+                                <label for="want_datasheets" class="text-sm text-charcoal">Send me product datasheets</label>
+                            </div>
 
                             <button type="submit" class="w-full bg-corporate-blue text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg">Submit RFQ</button>
                         </form>
@@ -501,10 +637,11 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <div class="space-y-2">
-                        <a href="#products" class="block text-white/80 hover:text-white">Products</a>
+                        <a href="#products"   class="block text-white/80 hover:text-white">Products</a>
                         <a href="#films-yarn" class="block text-white/80 hover:text-white">Films & Yarn</a>
-                        <a href="#quality" class="block text-white/80 hover:text-white">Quality</a>
-                        <a href="#contact" class="block text-white/80 hover:text-white">Contact</a>
+                        <!-- FIX: footer link also points to #industries -->
+                        <a href="#industries" class="block text-white/80 hover:text-white">Quality</a>
+                        <a href="#contact"    class="block text-white/80 hover:text-white">Contact</a>
                     </div>
                 </div>
             </div>
@@ -552,14 +689,13 @@
         }
       };
 
-      // Datasheets button
+      // Datasheets button (optional tracking hook)
       const datasheetsBtn = document.getElementById('datasheetsBtn');
       if (datasheetsBtn) {
-        datasheetsBtn.addEventListener('click', () => {
-          // optional tracking
-        });
+        datasheetsBtn.addEventListener('click', () => {});
       }
     })();
+
 </script>
 
 <!-- keep (external) -->
