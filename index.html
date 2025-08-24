@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Supreme Group - Precision Components & Industrial Film</title>
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+          darkMode: 'class', /* we apply class via system-only script below */
           theme: {
             extend: {
               colors: {
                 'corporate-blue': '#1F6FEB',
-                'safety-green' : '#12B76A',
-                'charcoal'     : '#1E1E1E',
+                'safety-green'  : '#12B76A',
+                'charcoal'      : '#1E1E1E',
               }
             }
           }
         }
     </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 
     <style>
-        /* ultra-clean glass card */
+        /* ===== Glass card & header ===== */
         .glass-card{
           position:relative;border-radius:16px;
           background:rgba(255,255,255,.06);
@@ -66,106 +70,88 @@
         @media (max-width: 640px){
           .logo-clip{ height:3.25rem; width:6.75rem; border-radius:22px; }
           .logo-clip img{ height:120%; }
-
           .brand-title{ font-size:1.35rem; line-height:1.1; }
           .brand-sub{ font-size:.80rem; }
-
-          .hero-img{
-            height:70vh; min-height:560px;
-            object-position: 60% 35%;
-          }
-
-          .cta-wrap{
-            left:50%; right:auto; transform:translateX(-50%);
-            top: calc(72px + env(safe-area-inset-top, 0px));
-          }
+          .hero-img{ height:70vh; min-height:560px; object-position: 60% 35%; }
+          .cta-wrap{ left:50%; right:auto; transform:translateX(-50%); top: calc(72px + env(safe-area-inset-top, 0px)); }
           .cta-btn{ width:min(88vw, 360px); }
-
           .glass-card{ background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); }
           .glass-card h1{ font-size:1.6rem; }
           .glass-card p{  font-size:1rem; }
         }
-    </style>
 
-    <!-- ===== DARK MODE OVERRIDES (additive; light stays untouched) ===== -->
-    <style>
-        html.dark, html.dark body{
-          background:#0b0f14; color:#e5e7eb;
+        /* ===== Contact Modal (glass) ===== */
+        .contact-backdrop{
+          position:fixed; inset:0; z-index:60; display:none;
+          background:rgba(0,0,0,.45);
+          backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
         }
-        html.dark .sticky-header{
-          background:rgba(10,16,23,.55);
-          -webkit-backdrop-filter:saturate(160%) blur(14px);
-          backdrop-filter:saturate(160%) blur(14px);
-          border-bottom:1px solid rgba(255,255,255,.10);
-        }
-        html.dark .sticky-header a,
-        html.dark .brand-sub{ color:#e5e7eb !important; }
+        .contact-backdrop[aria-hidden="false"]{ display:block; }
 
-        html.dark .glass-card{
-          background:rgba(0,0,0,.35);
-          border-color:rgba(255,255,255,.14);
-        }
-        html.dark .glass-card::before{
-          background:radial-gradient(140% 80% at 0% 0%, rgba(255,255,255,.10), transparent 50%);
-          opacity:.6;
-        }
-        html.dark .glass-card h1,
-        html.dark .glass-card p{ color:#fff; }
+        .contact-modal{ position:fixed; inset:0; z-index:70; display:none; place-items:center; padding:24px; }
+        .contact-modal[aria-hidden="false"]{ display:grid; }
 
-        html.dark #products .grid > div{
-          background:rgba(255,255,255,.06) !important;
-          -webkit-backdrop-filter:blur(18px);
-          backdrop-filter:blur(18px);
-          border-color:rgba(255,255,255,.12) !important;
+        .contact-card{
+          width:min(560px, 94vw); border-radius:18px; position:relative;
+          background:rgba(255,255,255,.14);
+          border:1px solid rgba(255,255,255,.38);
+          box-shadow:0 30px 80px -20px rgba(0,0,0,.45);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          backdrop-filter: blur(24px) saturate(160%);
+          overflow:hidden;
         }
-        html.dark #products h3{ color:#fff; }
-        html.dark #products p{ color:rgba(255,255,255,.85); }
+        .contact-card:before{
+          content:""; position:absolute; inset:0; pointer-events:none;
+          background:radial-gradient(140% 80% at -10% -20%, rgba(255,255,255,.45), transparent 55%);
+        }
+        .contact-header{ display:flex; align-items:center; justify-content:space-between; padding:16px 20px; gap:12px; }
+        .contact-title{ font-weight:800; font-size:1.15rem }
+        .icon-btn{
+          display:inline-flex; align-items:center; justify-content:center;
+          height:38px; width:38px; border-radius:10px; border:1px solid rgba(0,0,0,.06);
+          background:rgba(255,255,255,.75); box-shadow:0 6px 20px -8px rgba(0,0,0,.45);
+        }
+        .icon-btn:hover{ background:#fff }
+        .contact-body{ padding:10px 20px 20px; }
 
-        html.dark #about .rounded-2xl{
-          background:rgba(255,255,255,.06) !important;
-          border-color:rgba(255,255,255,.12) !important;
+        .contact-tabs{ display:flex; gap:8px; padding:0 20px 12px; }
+        .tab{
+          flex:1; padding:10px 12px; text-align:center; font-weight:600; border-radius:10px;
+          border:1px solid rgba(0,0,0,.06); background:rgba(255,255,255,.8); cursor:pointer;
         }
-        html.dark #about .shadow-xl{
-          background:rgba(17,24,39,.92) !important;
-          color:#e5e7eb;
-        }
-        html.dark #about p{ color:rgba(255,255,255,.85); }
-        html.dark #about h3.text-corporate-blue{ color:#93c5fd !important; }
+        .tab[aria-selected="true"]{ background:#1F6FEB; color:#fff; border-color:transparent; }
 
-        html.dark #contact .rounded-2xl{
-          background:rgba(255,255,255,.06) !important;
-          border-color:rgba(255,255,255,.12) !important;
+        .contact-row{
+          display:flex; align-items:center; gap:12px;
+          background:rgba(255,255,255,.82); border:1px solid rgba(0,0,0,.06);
+          border-radius:12px; padding:12px 14px; margin-top:10px;
         }
-        html.dark #contact label,
-        html.dark #contact .text-charcoal{ color:#e5e7eb !important; }
-        html.dark #contact input,
-        html.dark #contact textarea,
-        html.dark #contact select{
-          background:rgba(255,255,255,.05);
-          border-color:rgba(255,255,255,.15);
-          color:#e5e7eb;
+        .contact-row .actions{ margin-left:auto; display:flex; gap:8px }
+        .chip{
+          display:inline-flex; align-items:center; gap:8px; padding:8px 12px;
+          border-radius:999px; font-weight:600; border:1px solid rgba(0,0,0,.06); background:#fff;
         }
-        html.dark #contact ::placeholder{ color:#9ca3af; }
 
-        html.dark section .bg-white.border{
-          background:rgba(31,41,55,.85) !important;
-          border-color:rgb(55 65 81) !important;
-        }
-        html.dark section .bg-white.border .text-charcoal{ color:#e5e7eb !important; }
-        html.dark .text-gray-600{ color:#cbd5e1 !important; }
+        /* Dark variant (system applied via script) */
+        html.dark .contact-card{ background:rgba(16,22,28,.65); border-color:rgba(255,255,255,.15); }
+        html.dark .icon-btn{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.15); color:#e5e7eb }
+        html.dark .icon-btn:hover{ background:rgba(255,255,255,.14) }
+        html.dark .tab{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); color:#e5e7eb }
+        html.dark .contact-row, html.dark .chip{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); color:#e5e7eb }
     </style>
 </head>
 
 <body class="bg-white text-charcoal">
 <div id="top"></div>
 
+<!-- HEADER -->
 <header class="sticky top-0 z-50 sticky-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
             <a href="#top" class="flex items-center gap-4">
-                <span class="logo-clip">
-                  <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
-                </span>
+        <span class="logo-clip">
+          <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
+        </span>
                 <div class="leading-tight">
                     <div class="font-bold brand-title">
                         <span class="text-corporate-blue text-3xl sm:text-3xl">Supreme</span>
@@ -177,21 +163,12 @@
                 </div>
             </a>
 
-            <nav class="hidden md:flex items-center space-x-8">
+            <nav class="hidden md:flex space-x-8">
                 <a href="#products"   class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Shock Tube Products</a>
                 <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Films &amp; Yarn</a>
                 <a href="#industries" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
                 <a href="#about"      class="text-charcoal hover:text-corporate-blue transition-colors font-bold">About</a>
                 <a href="#contact"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Contact</a>
-
-                <!-- Theme toggle -->
-                <button id="themeToggle"
-                        class="ml-2 rounded-lg px-3 py-2 text-sm font-semibold border border-black/10
-                               bg-white/60 text-charcoal hover:bg-black/5 transition"
-                        aria-label="Toggle color theme">
-                    <span id="themeLabel">Light</span>
-                    <i class="fa-solid fa-circle-half-stroke ml-2"></i>
-                </button>
             </nav>
         </div>
     </div>
@@ -204,24 +181,24 @@
 
     <!-- CTAs -->
     <div class="absolute z-20 right-4 sm:right-8 lg:right-16 top-10 sm:top-14 lg:top-20
-            flex flex-col sm:flex-row gap-4 items-stretch cta-wrap">
+              flex flex-col sm:flex-row gap-4 items-stretch cta-wrap">
         <a href="#contact"
            class="cta-btn bg-corporate-blue text-white px-8 py-5 sm:px-10 sm:py-5 rounded-xl font-semibold
-            hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl text-center">
+              hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl text-center">
             Request a Quote
         </a>
 
         <a id="datasheetsBtn" href="./assets/product-datasheet.pdf#view=FitH&toolbar=1"
            target="_blank" rel="noopener noreferrer"
            class="cta-btn inline-flex items-center justify-center gap-3 rounded-xl px-8 py-5 sm:px-10 sm:py-5
-            font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg
-            text-lg sm:text-xl">
+              font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg
+              text-lg sm:text-xl">
             <i class="fa-solid fa-file-pdf text-xl sm:text-2xl"></i>
             <span>Product Datasheet</span>
         </a>
     </div>
 
-    <!-- headline card -->
+    <!-- Headline card -->
     <div class="absolute z-20 right-4 sm:right-8 lg:right-14 bottom-1 sm:bottom-2 lg:bottom-4
               w-[min(92vw,620px)] md:w-[560px] lg:w-[600px]">
         <div class="glass-card px-8 sm:px-10 py-8 sm:py-10">
@@ -584,10 +561,14 @@
                 <div>
                     <h3 class="text-2xl font-bold mb-4">Supreme Group</h3>
                     <p class="text-white/80 mb-4">Precision Films & Industrial Components For Reliable Supply Chains.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-white/80 hover:text-white"><i class="fab fa-whatsapp text-2xl"></i></a>
-                        <a href="#" class="text-white/80 hover:text-white"><i class="fas fa-phone text-2xl"></i></a>
-                        <a href="#" class="text-white/80 hover:text-white"><i class="fas fa-envelope text-2xl"></i></a>
+                    <div class="flex gap-3 items-center">
+                        <!-- use either these three icons OR replace with single chip button -->
+                        <a href="#" class="text-white/80 hover:text-white" data-contact="whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp text-2xl"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white" data-contact="phone" aria-label="Phone"><i class="fas fa-phone text-2xl"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white" data-contact="email" aria-label="Email"><i class="fas fa-envelope text-2xl"></i></a>
+                        <!-- Or single pill:
+                        <button class="chip" data-contact="all"><i class="fa-solid fa-message"></i> Contact</button>
+                        -->
                     </div>
                 </div>
 
@@ -622,73 +603,170 @@
     </div>
 </footer>
 
-<script>
-    (() => {
-      // Smooth scrolling
-      document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-          const href = a.getAttribute('href');
-          if (href && href.length > 1) {
-            const target = document.querySelector(href);
-            if (target) {
-              e.preventDefault();
-              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }
-        });
-      });
+<!-- Contact Modal -->
+<div class="contact-backdrop" id="contactBackdrop" aria-hidden="true"></div>
+<div class="contact-modal" id="contactModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <div class="contact-card">
+        <div class="contact-header">
+            <div class="contact-title" id="contactTitle">Get in touch</div>
+            <button class="icon-btn" id="contactClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
 
-      // Accordion
-      window.toggleAccordion = (button) => {
-        const content = button.nextElementSibling;
-        const icon = button.querySelector('i');
-        document.querySelectorAll('.accordion-content').forEach(item => {
-          if (item !== content) {
-            item.classList.remove('active');
-            const ico = item.previousElementSibling?.querySelector('i');
-            if (ico) ico.style.transform = 'rotate(0deg)';
-          }
-        });
-        content.classList.toggle('active');
-        if (icon) {
-          icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
-      };
-    })();
-</script>
+        <div class="contact-tabs" role="tablist" aria-label="Contact methods">
+            <button class="tab" role="tab" aria-selected="true"  data-tab="whatsapp"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="phone"><i class="fa-solid fa-phone mr-2"></i>Phone</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="email"><i class="fa-solid fa-envelope mr-2"></i>Email</button>
+        </div>
 
-<!-- Tiny Theme Manager: Light → Dark → Auto -->
+        <div class="contact-body">
+            <!-- WhatsApp -->
+            <div class="panel" data-panel="whatsapp">
+                <div class="contact-row">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <div class="font-semibold">Chat on WhatsApp</div>
+                        <div class="text-sm opacity-80">+ 9 1 - 8 2 8 7 6 3 6 1 5 3</div>
+                    </div>
+                    <div class="actions">
+                        <a id="waLink" class="chip" href="https://wa.me/918287636153" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Open</a>
+                        <button class="chip" data-copy="+ 9 1 - 8 2 8 7 6 3 6 1 5 3"><i class="fa-regular fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="panel" data-panel="phone" hidden>
+                <div class="contact-row">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <div class="font-semibold">Call us</div>
+                        <div class="text-sm opacity-80">+ 9 1 - 0 1 2 0 - 3 6 7 0 7 4 5</div>
+                    </div>
+                    <div class="actions">
+                        <a class="chip" href="tel:+ 9 1 - 0 1 2 0 - 3 6 7 0 7 4 5"><i class="fa-solid fa-phone"></i> Call</a>
+                        <button class="chip" data-copy="+ 9 1 - 0 1 2 0 - 3 6 7 0 7 4 5"><i class="fa-regular fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="panel" data-panel="email" hidden>
+                <div class="contact-row">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <div class="font-semibold">General Enquiry</div>
+                        <div class="text-sm opacity-80">supremelaminations@gmail.com</div>
+                    </div>
+                    <div class="actions">
+                        <a class="chip" href="mailto:supremelaminations@gmail.com?subject=Enquiry%20—%20Supreme%20Group"><i class="fa-solid fa-paper-plane"></i> Email</a>
+                        <button class="chip" data-copy="supremelaminations@gmail.com"><i class="fa-regular fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+                <div class="contact-row">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <div class="font-semibold">Sales</div>
+                        <div class="text-sm opacity-80">ajeetlalexplosives@gmail.com</div>
+                    </div>
+                    <div class="actions">
+                        <a class="chip" href="mailto:ajeetlalexplosives@gmail.com?subject=RFQ%20—%20Supreme%20Group"><i class="fa-solid fa-paper-plane"></i> Email</a>
+                        <button class="chip" data-copy="ajeetlalexplosives@gmail.com"><i class="fa-regular fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
 <script>
+    // System-only dark mode (no toggle)
     (function(){
-      const KEY='themeMode';
-      const btn=document.getElementById('themeToggle');
-      const label=document.getElementById('themeLabel');
-      if(!btn||!label) return;
+      const html = document.documentElement;
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      const apply = () => mq.matches ? html.classList.add('dark') : html.classList.remove('dark');
+      apply(); mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply);
+    })();
 
-      function osDark(){ return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
-      function effective(mode){ return mode==='auto' ? (osDark()?'dark':'light') : mode; }
-      function apply(mode){
-        const eff = effective(mode);
-        document.documentElement.classList.toggle('dark', eff==='dark');
-        label.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        if (href && href.length > 1) {
+          const target = document.querySelector(href);
+          if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        }
+      });
+    });
+
+    // Accordion
+    window.toggleAccordion = (button) => {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('i');
+      document.querySelectorAll('.accordion-content').forEach(item => {
+        if (item !== content) {
+          item.classList.remove('active');
+          const ico = item.previousElementSibling?.querySelector('i');
+          if (ico) ico.style.transform = 'rotate(0deg)';
+        }
+      });
+      content.classList.toggle('active');
+      if (icon) icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+    };
+
+    // Contact modal wiring
+    (() => {
+      const modal   = document.getElementById('contactModal');
+      const back    = document.getElementById('contactBackdrop');
+      const closeBt = document.getElementById('contactClose');
+      const tabs    = Array.from(document.querySelectorAll('.contact-tabs .tab'));
+      const panels  = Array.from(document.querySelectorAll('.contact-body .panel'));
+
+      function show(which='whatsapp'){
+        modal.setAttribute('aria-hidden','false');
+        back.setAttribute('aria-hidden','false');
+        switchTab(which);
+        setTimeout(()=>closeBt.focus(), 0);
+        document.body.style.overflow='hidden';
       }
-      function next(mode){ return mode==='light' ? 'dark' : mode==='dark' ? 'auto' : 'light'; }
+      function hide(){
+        modal.setAttribute('aria-hidden','true');
+        back.setAttribute('aria-hidden','true');
+        document.body.style.overflow='';
+      }
+      function switchTab(which){
+        tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab===which)));
+        panels.forEach(p => p.hidden = (p.dataset.panel!==which));
+        document.getElementById('contactTitle').textContent =
+          which==='whatsapp' ? 'Chat on WhatsApp' :
+          which==='phone'    ? 'Call us'          : 'Send an Email';
+      }
 
-      let mode = localStorage.getItem(KEY) || 'light';
-      apply(mode);
-
-      btn.addEventListener('click', ()=>{
-        mode = next(mode);
-        localStorage.setItem(KEY, mode);
-        apply(mode);
+      document.addEventListener('click', (e)=>{
+        const btn = e.target.closest('[data-contact]');
+        if(!btn) return;
+        e.preventDefault();
+        const mode = btn.getAttribute('data-contact'); // 'whatsapp' | 'phone' | 'email' | 'all'
+        show(mode==='all' ? 'whatsapp' : mode);
       });
 
-      if(window.matchMedia){
-        const mq = window.matchMedia('(prefers-color-scheme: dark)');
-        (mq.addEventListener||mq.addListener).call(mq,'change', ()=>{
-          if((localStorage.getItem(KEY)||'light')==='auto') apply('auto');
-        });
-      }
+      tabs.forEach(t => t.addEventListener('click', ()=> switchTab(t.dataset.tab)));
+
+      modal.addEventListener('click', async (e)=>{
+        const c = e.target.closest('[data-copy]');
+        if(!c) return;
+        try{
+          await navigator.clipboard.writeText(c.dataset.copy);
+          c.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+          setTimeout(()=> c.innerHTML = '<i class="fa-regular fa-copy"></i> Copy', 1200);
+        }catch(_){}
+      });
+
+      back.addEventListener('click', hide);
+      closeBt.addEventListener('click', hide);
+      document.addEventListener('keydown', (e)=>{
+        if(e.key==='Escape' && modal.getAttribute('aria-hidden')==='false') hide();
+      });
     })();
 </script>
 </body>
