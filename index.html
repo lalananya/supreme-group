@@ -5,11 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Supreme Group - Precision Components & Industrial Film</title>
 
-    <!-- Tailwind -->
+    <!-- ===========================
+         0) EARLY THEME BOOT (no flash)
+         =========================== -->
+    <script>
+        (function () {
+          const stored = localStorage.getItem('themeMode') || 'auto';
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const dark = stored === 'dark' || (stored === 'auto' && prefersDark);
+          if (dark) document.documentElement.classList.add('dark');
+          document.documentElement.dataset.themeMode = stored;
+        })();
+    </script>
+
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-          darkMode: 'class', /* we apply class via system-only script below */
+          darkMode: 'class',
           theme: {
             extend: {
               colors: {
@@ -25,8 +38,28 @@
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 
+    <!-- ===========================
+         1) GLOBAL & THEME SURFACES
+         =========================== -->
     <style>
-        /* ===== Glass card & header ===== */
+        html.dark body{ background:#0b0d0f; color:#e5e7eb; }
+        html.dark .text-charcoal{ color:#e5e7eb; }
+        html.dark .sticky-header{ background:rgba(10,12,14,.45); border-bottom-color:rgba(255,255,255,.12); }
+        html.dark .glass-card{ border-color:rgba(255,255,255,.22); background:rgba(255,255,255,.08); }
+        html.dark .glass-card::before{ opacity:.25; }
+
+        .sticky-header{
+          background:rgba(255,255,255,.28);
+          -webkit-backdrop-filter:saturate(160%) blur(14px);
+          backdrop-filter:saturate(160%) blur(14px);
+          border-bottom:1px solid rgba(255,255,255,.35);
+        }
+    </style>
+
+    <!-- ===========================
+         2) GLASS / CARDS / BRAND
+         =========================== -->
+    <style>
         .glass-card{
           position:relative;border-radius:16px;
           background:rgba(255,255,255,.06);
@@ -45,16 +78,6 @@
           .glass-card::before{opacity:.30}
         }
 
-        .sticky-header{
-          background:rgba(255,255,255,.28);
-          -webkit-backdrop-filter:saturate(160%) blur(14px);
-          backdrop-filter:saturate(160%) blur(14px);
-          border-bottom:1px solid rgba(255,255,255,.35);
-        }
-
-        .accordion-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
-        .accordion-content.active{max-height:200px}
-
         .logo-clip{
           height:4.75rem;width:9.5rem;border-radius:9999px;
           background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.45);
@@ -66,7 +89,7 @@
           transform:translateY(1px);user-select:none;pointer-events:none;
         }
 
-        /* ===== Mobile polish (≤640px) ===== */
+        /* Mobile brand/hero polish */
         @media (max-width: 640px){
           .logo-clip{ height:3.25rem; width:6.75rem; border-radius:22px; }
           .logo-clip img{ height:120%; }
@@ -79,8 +102,20 @@
           .glass-card h1{ font-size:1.6rem; }
           .glass-card p{  font-size:1rem; }
         }
+    </style>
 
-        /* ===== Contact Modal (glass) ===== */
+    <!-- ===========================
+         3) FAQ ACCORDION
+         =========================== -->
+    <style>
+        .accordion-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
+        .accordion-content.active{max-height:200px}
+    </style>
+
+    <!-- ===========================
+         4) CONTACT MODAL (glass)
+         =========================== -->
+    <style>
         .contact-backdrop{
           position:fixed; inset:0; z-index:60; display:none;
           background:rgba(0,0,0,.45);
@@ -132,22 +167,109 @@
           border-radius:999px; font-weight:600; border:1px solid rgba(0,0,0,.06); background:#fff;
         }
 
-        /* Dark variant (system applied via script) */
+        /* Dark variant */
         html.dark .contact-card{ background:rgba(16,22,28,.65); border-color:rgba(255,255,255,.15); }
         html.dark .icon-btn{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.15); color:#e5e7eb }
         html.dark .icon-btn:hover{ background:rgba(255,255,255,.14) }
         html.dark .tab{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); color:#e5e7eb }
         html.dark .contact-row, html.dark .chip{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); color:#e5e7eb }
+
+        /* Mobile bottom sheet polish */
+        @media (max-width: 480px){
+          .contact-modal{ align-items:end; padding:0; }
+          .contact-card{ width:100vw; max-width:100vw; border-radius:18px 18px 0 0; margin:0; transform:translateZ(0); }
+          .contact-header{ padding:16px 20px 12px; padding-top:calc(12px + env(safe-area-inset-top, 0px)); }
+          .contact-body{ padding:12px 16px calc(16px + env(safe-area-inset-bottom, 0px)); overflow:auto; max-height:min(72vh,560px); }
+          .contact-tabs{ padding:6px 16px 10px; gap:10px; }
+          .contact-tabs .tab{ display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 10px; border-radius:14px; font-size:13px; line-height:1.1; height:74px; user-select:none; -webkit-tap-highlight-color:transparent; }
+          .contact-tabs .tab i{ font-size:22px; margin-right:0 !important; }
+          .contact-tabs .tab[aria-selected="true"]{ box-shadow:0 6px 18px -8px rgba(31,111,235,.55); }
+          .contact-row{ padding:12px; gap:10px; }
+          .contact-row .actions{ gap:6px; flex-shrink:0; }
+          .chip{ padding:8px 10px; font-size:12.5px; white-space:nowrap; }
+          .chip i{ font-size:12px; }
+          #contactClose.icon-btn{ width:42px; height:42px; border-radius:12px; }
+          .contact-backdrop{ background:rgba(0,0,0,.55); }
+        }
+        @media (max-width: 360px){
+          .contact-tabs .tab{ height:70px; font-size:12px; }
+          .contact-tabs .tab i{ font-size:20px; }
+          .contact-row{ padding:10px; }
+          .chip{ padding:7px 9px; font-size:12px; }
+        }
+
+        /* Desktop hover + a11y */
+        @media (hover:hover){
+          .contact-tabs .tab:hover{
+            background: rgba(31,111,235,.10);
+            border-color: rgba(31,111,235,.28);
+            box-shadow: 0 10px 26px -14px rgba(31,111,235,.55);
+          }
+          .chip:hover{ background:#1F6FEB; color:#fff; }
+          .chip:hover i{ opacity:.95; }
+        }
+        .contact-tabs .tab[aria-selected="true"]{
+          background:#1F6FEB; color:#fff; border-color:transparent;
+          box-shadow:0 12px 28px -12px rgba(31,111,235,.65);
+        }
+        .contact-tabs .tab:focus-visible, .chip:focus-visible{
+          outline:2px solid #1F6FEB; outline-offset:2px;
+          box-shadow:0 0 0 4px rgba(31,111,235,.20); border-radius:14px;
+        }
+        .contact-tabs .tab:active{ transform:translateY(1px); filter:saturate(1.05); }
+        .chip:active{ transform:translateY(1px); background:#1F6FEB; color:#fff; }
+        .contact-tabs .tab,.chip,.icon-btn{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+    </style>
+
+    <!-- ===========================
+         5) IST CLOCK (compact)
+         =========================== -->
+    <style>
+        .clock-chip{
+          display:inline-flex; align-items:center; gap:6px;
+          padding:6px 8px; border-radius:999px;
+          font-weight:600; font-size:12px; line-height:1;
+          background:rgba(255,255,255,.6);
+          border:1px solid rgba(0,0,0,.06);
+          box-shadow:0 8px 24px -10px rgba(0,0,0,.35);
+          -webkit-backdrop-filter:saturate(160%) blur(10px);
+          backdrop-filter:saturate(160%) blur(10px);
+          white-space:nowrap; user-select:none;
+          font-variant-numeric: tabular-nums;
+        }
+        .clock-chip i{ font-size:12px; opacity:.85 }
+        .clock-chip .label{ letter-spacing:.35px; opacity:.85 }
+        .clock-chip .dot{ opacity:.6 }
+        .clock-chip .time{ font-weight:800; }
+        @media (min-width: 640px){ .clock-chip{ font-size:13px; padding:6px 10px; gap:7px; } }
+        @media (min-width: 768px){ .clock-chip{ font-size:14px; padding:7px 11px; } }
+        html.dark .clock-chip{
+          background:rgba(255,255,255,.10);
+          border-color:rgba(255,255,255,.14);
+          color:#e5e7eb;
+        }
+        @media (hover:hover){
+          .clock-chip:hover{
+            box-shadow:0 12px 30px -12px rgba(31,111,235,.45);
+            border-color:rgba(31,111,235,.25);
+          }
+        }
+        /* Extra-tight override for tiny phones */
+        .clock-chip{ padding:4px 8px !important; font-size:12px !important; gap:6px !important; }
+        .clock-chip i{ font-size:12px !important; }
+        @media (max-width:380px){ .clock-chip{ font-size:11px !important; padding:4px 7px !important; } }
     </style>
 </head>
 
 <body class="bg-white text-charcoal">
 <div id="top"></div>
 
-<!-- HEADER -->
+<!-- ===========================
+     HEADER
+     =========================== -->
 <header class="sticky top-0 z-50 sticky-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-24">
+        <div class="flex justify-between items-center h-24 gap-3 md:gap-4">
             <a href="#top" class="flex items-center gap-4">
         <span class="logo-clip">
           <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
@@ -157,24 +279,46 @@
                         <span class="text-corporate-blue text-3xl sm:text-3xl">Supreme</span>
                         <span class="text-safety-green text-3xl sm:text-3xl">Group</span>
                     </div>
-                    <p class="brand-sub text-sm md:text-base text-gray-700/90 italic -mt-0.5">
+                    <p class="brand-sub text-sm md:text-base text-gray-700/90 italic -mt-0.5 dark:text-gray-300/90">
                         Delivering Excellence Since 2007
                     </p>
                 </div>
             </a>
 
-            <nav class="hidden md:flex space-x-8">
-                <a href="#products"   class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Shock Tube Products</a>
-                <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Films &amp; Yarn</a>
-                <a href="#industries" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
-                <a href="#about"      class="text-charcoal hover:text-corporate-blue transition-colors font-bold">About</a>
-                <a href="#contact"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Contact</a>
-            </nav>
+            <div class="flex items-center gap-3 md:gap-4">
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#products"   class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Shock Tube Products</a>
+                    <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Films &amp; Yarn</a>
+                    <a href="#industries" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
+                    <a href="#about"      class="text-charcoal hover:text-corporate-blue transition-colors font-bold">About</a>
+                    <a href="#contact"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Contact</a>
+                </nav>
+
+                <!-- IST Clock chip -->
+                <div id="istClock" class="clock-chip" aria-label="Current time in IST">
+                    <i class="fa-regular fa-clock"></i>
+                    <span class="label">IST</span>
+                    <span class="dot">•</span>
+                    <span class="time">--:--:--</span>
+                </div>
+
+                <!-- Theme toggle -->
+                <label class="sr-only" for="themeSelect">Theme</label>
+                <select id="themeSelect"
+                        class="ml-2 rounded-lg border border-white/60 bg-white/80 px-3 py-2 text-sm shadow
+                       dark:bg-white/10 dark:text-gray-100 dark:border-white/20">
+                    <option value="auto">Auto</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
         </div>
     </div>
 </header>
 
-<!-- HERO -->
+<!-- ===========================
+     HERO
+     =========================== -->
 <section class="relative overflow-hidden">
     <img src="./assets/special-bg.png" alt="Background"
          class="hero-img w-full h-[86vh] min-h-[640px] object-cover object-center"/>
@@ -203,10 +347,10 @@
               w-[min(92vw,620px)] md:w-[560px] lg:w-[600px]">
         <div class="glass-card px-8 sm:px-10 py-8 sm:py-10">
             <div class="text-center">
-                <h1 class="font-extrabold text-charcoal leading-tight mb-4 text-3xl sm:text-4xl lg:text-[40px]">
+                <h1 class="font-extrabold text-charcoal leading-tight mb-4 text-3xl sm:text-4xl lg:text-[40px] dark:text-gray-100">
                     Industrial Precision.<br/>Consistent Supply.
                 </h1>
-                <p class="text-base sm:text-lg lg:text-xl text-gray-900/90">
+                <p class="text-base sm:text-lg lg:text-xl text-gray-900/90 dark:text-gray-200/90">
                     Serving India's Industrial Explosive Sector With Pride.
                 </p>
             </div>
@@ -214,38 +358,41 @@
     </div>
 </section>
 
-<!-- PRODUCTS -->
-<section id="products" class="py-20 relative bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.10),transparent_60%)]">
+<!-- ===========================
+     PRODUCTS
+     =========================== -->
+<section id="products" class="py-20 relative bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.10),transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.18),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.14),transparent_60%)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
+            <!-- cards x4 -->
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl dark:bg-white/10 dark:ring-white/10">
                 <div>
-                    <h3 class="text-lg font-semibold mb-2">Non-Electric Detonator Housings</h3>
-                    <p class="text-gray-700 text-sm">Outer Housing, Precision Moulded For Commercial Explosives.</p>
+                    <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Non-Electric Detonator Housings</h3>
+                    <p class="text-gray-700 text-sm dark:text-gray-300">Outer Housing, Precision Moulded For Commercial Explosives.</p>
                 </div>
                 <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
             </div>
 
-            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl dark:bg-white/10 dark:ring-white/10">
                 <div>
-                    <h3 class="text-lg font-semibold mb-2">STL Connectors & Sleeves</h3>
-                    <p class="text-gray-700 text-sm">High Precision Connectors For Industrial Applications.</p>
+                    <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">STL Connectors & Sleeves</h3>
+                    <p class="text-gray-700 text-sm dark:text-gray-300">High Precision Connectors For Industrial Applications.</p>
                 </div>
                 <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
             </div>
 
-            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl dark:bg-white/10 dark:ring-white/10">
                 <div>
-                    <h3 class="text-lg font-semibold mb-2">Cast Booster Cups</h3>
-                    <p class="text-gray-700 text-sm">Customised Specifications For Durability.</p>
+                    <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Cast Booster Cups</h3>
+                    <p class="text-gray-700 text-sm dark:text-gray-300">Customised Specifications For Durability.</p>
                 </div>
                 <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
             </div>
 
-            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl dark:bg-white/10 dark:ring-white/10">
                 <div>
-                    <h3 class="text-lg font-semibold mb-2">Customise Moulded Components</h3>
-                    <p class="text-gray-700 text-sm">Crafted With Precision For Export Grade.</p>
+                    <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Customise Moulded Components</h3>
+                    <p class="text-gray-700 text-sm dark:text-gray-300">Crafted With Precision For Export Grade.</p>
                 </div>
                 <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
             </div>
@@ -253,7 +400,9 @@
     </div>
 </section>
 
-<!-- FILMS & YARN -->
+<!-- ===========================
+     FILMS & YARN
+     =========================== -->
 <section id="films-yarn" class="relative py-20 bg-cover bg-center" style="background-image:url('./assets/829BDC6D-593F-433C-9D06-33EEC5289B54.PNG');">
     <div class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -314,10 +463,12 @@
     </svg>
 </div>
 
-<!-- INDUSTRIES -->
+<!-- ===========================
+     INDUSTRIES
+     =========================== -->
 <section id="industries" class="relative py-20 bg-cover bg-center" style="background-image:url('./assets/10C3658C-062D-43D9-AA07-A2F2F579DED0.PNG');">
-    <div class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent z-0"></div>
-    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent z-0"></div>
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent z-0 dark:from-[#0b0d0f]"></div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent z-0 dark:from-[#0b0d0f]"></div>
     <div class="absolute inset-0 bg-black/35"></div>
     <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.22),transparent_60%)]"></div>
 
@@ -328,6 +479,7 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8">
+            <!-- 5 industry tiles -->
             <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
                 <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
                     <i class="fas fa-mountain text-3xl text-[#1F6FEB] drop-shadow"></i>
@@ -366,47 +518,49 @@
     </div>
 </section>
 
-<!-- ABOUT + CONTACT -->
-<section id="about" class="py-20 bg-gray-50">
+<!-- ===========================
+     ABOUT + CONTACT (RFQ)
+     =========================== -->
+<section id="about" class="py-20 bg-gray-50 dark:bg-[#0d1117]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-5xl mx-auto space-y-10">
-            <div class="rounded-2xl shadow-2xl p-8 lg:p-10 bg-white/30 backdrop-blur-xl border border-white/40">
+            <div class="rounded-2xl shadow-2xl p-8 lg:p-10 bg-white/30 backdrop-blur-xl border border-white/40 dark:bg-white/5 dark:border-white/10">
                 <h3 class="text-2xl font-semibold mb-4 text-corporate-blue">Supreme Laminations</h3>
-                <p class="text-gray-700 leading-relaxed mb-6">
+                <p class="text-gray-700 leading-relaxed mb-6 dark:text-gray-300">
                     Supreme Lamination was established under the leadership of Mr. Ajeet Lal with the objective of manufacturing and supplying reliable industrial components that meet the specific needs of customers across India. The company began its journey with a modest setup and a focused product range, operating with the principle that consistent quality and timely delivery are the keys to building trust in the market.
                 </p>
-                <p class="text-gray-700 leading-relaxed mb-6">
+                <p class="text-gray-700 leading-relaxed mb-6 dark:text-gray-300">
                     From the initial stages, Mr. Ajeet Lal has been personally involved in all aspects of the business, from evaluating raw material quality, supervising manufacturing processes, and ensuring precision in moulding, to managing logistics and responding to urgent customer requirements. This hands-on management style has allowed the company to maintain strict control over quality and delivery schedules, even in challenging circumstances.
                 </p>
-                <p class="text-gray-700 leading-relaxed mb-6">
+                <p class="text-gray-700 leading-relaxed mb-6 dark:text-gray-300">
                     Supreme Lamination operates with advanced injection moulding and blow moulding machines, enabling the production of a wide variety of precision components. The company’s product range serves multiple industrial sectors, where durability, dimensional accuracy, and consistent performance are essential. Every product is subject to quality checks at various stages, ensuring compliance with customer specifications and industry standards.
                 </p>
-                <p class="text-gray-700 leading-relaxed">
+                <p class="text-gray-700 leading-relaxed dark:text-gray-300">
                     Looking ahead, Supreme Lamination aims to strengthen its manufacturing capabilities, explore new product lines, and expand its reach to serve a wider market. While the company continues to adapt to changing market demands, it remains committed to the three core principles laid down by Mr. Ajeet Lal: integrity, reliability, and delivering products that meet or exceed customer expectations.
                 </p>
             </div>
 
-            <div class="rounded-2xl shadow-xl p-8 lg:p-10 bg-white">
+            <div class="rounded-2xl shadow-xl p-8 lg:p-10 bg-white dark:bg-white/5 dark:border dark:border-white/10">
                 <h3 class="text-2xl font-semibold mb-6 text-[#009245]">
-                    Ananya Engineered Industrial Components &amp; Pay Systems LLP.
+                    Ananya Engineered Industrial Components &amp; Pay Systems LLP. (SPECIAL)
                 </h3>
 
                 <div class="grid lg:grid-cols-5 gap-8 items-start">
                     <div class="lg:col-span-3 order-2 lg:order-1">
-                        <p class="text-gray-700 leading-relaxed mb-6">
+                        <p class="text-gray-700 leading-relaxed mb-6 dark:text-gray-300">
                             Alongside our manufacturing expertise, we design and develop custom software tools, workflow platforms,
                             and business solutions that enhance operational efficiency and enable seamless commercial processes.
                             With a focus on innovation, quality, and reliability, we serve diverse industrial sectors across India
                             and global markets.
                         </p>
-                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
                             <li>Custom software tools and platforms for workflow automation.</li>
                             <li>Platforms for streamlining internal operations, vendor management, and process tracking.</li>
                         </ul>
                     </div>
 
                     <div class="lg:col-span-2 order-1 lg:order-2">
-                        <div class="rounded-xl ring-1 ring-gray-200 shadow-md overflow-hidden bg-white">
+                        <div class="rounded-xl ring-1 ring-gray-200 shadow-md overflow-hidden bg-white dark:bg-white/10 dark:ring-white/10">
                             <iframe id="ananyaLogoFrame" src="logo.html#animatedLogo" title="Ananya LLP animated logo" class="w-full h-[320px] block" loading="lazy" style="border:0; overflow:hidden;" scrolling="no"></iframe>
                         </div>
                     </div>
@@ -424,45 +578,45 @@
 
             <!-- CONTACT / RFQ -->
             <section id="contact" class="py-20 relative">
-                <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.08),transparent_60%)]"></div>
+                <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.08),transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.18),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.14),transparent_60%)]"></div>
 
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-10">
-                        <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-3">Request for Quote</h2>
-                        <p class="text-gray-600 max-w-2xl mx-auto">Tell us about your requirements, and we'll get back to you with a detailed quote</p>
+                        <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-3 dark:text-gray-100">Request for Quote</h2>
+                        <p class="text-gray-600 max-w-2xl mx-auto dark:text-gray-300/80">Tell us about your requirements, and we'll get back to you with a detailed quote</p>
                     </div>
 
-                    <div class="rounded-2xl p-6 sm:p-8 lg:p-10 bg-white/18 backdrop-blur-2xl ring-1 ring-white/40 border border-white/20 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.35)]">
+                    <div class="rounded-2xl p-6 sm:p-8 lg:p-10 bg-white/18 backdrop-blur-2xl ring-1 ring-white/40 border border-white/20 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.35)] dark:bg-white/10 dark:ring-white/10 dark:border-white/10">
                         <form action="https://formspree.io/f/xvgqlyvq" method="POST" enctype="multipart/form-data" class="space-y-6">
                             <input type="hidden" name="_subject" value="New RFQ — Supreme Group"/>
                             <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off"/>
 
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="name">Name *</label>
-                                    <input id="name" name="name" type="text" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="name">Name *</label>
+                                    <input id="name" name="name" type="text" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="company">Company *</label>
-                                    <input id="company" name="company" type="text" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
-                                </div>
-                            </div>
-
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="email">Email *</label>
-                                    <input id="email" name="email" type="email" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="phone">Phone *</label>
-                                    <input id="phone" name="phone" type="tel" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="company">Company *</label>
+                                    <input id="company" name="company" type="text" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
                                 </div>
                             </div>
 
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="item">Item of Interest</label>
-                                    <select id="item" name="item" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="email">Email *</label>
+                                    <input id="email" name="email" type="email" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="phone">Phone *</label>
+                                    <input id="phone" name="phone" type="tel" required class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="item">Item of Interest</label>
+                                    <select id="item" name="item" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100">
                                         <option value="">Select Product</option>
                                         <option>Non-Electric Detonator Housings</option>
                                         <option>STL Connectors & Sleeves</option>
@@ -473,25 +627,25 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-charcoal mb-2" for="location">Country/State</label>
-                                    <input id="location" name="location" type="text" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="location">Country/State</label>
+                                    <input id="location" name="location" type="text" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block text-sm font-semibold text-charcoal mb-2" for="details">Quantity & Specifications</label>
-                                <textarea id="details" name="details" rows="4" placeholder="Please provide quantity requirements and technical specifications..." class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"></textarea>
+                                <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="details">Quantity & Specifications</label>
+                                <textarea id="details" name="details" rows="4" placeholder="Please provide quantity requirements and technical specifications..." class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"></textarea>
                             </div>
 
                             <div>
-                                <label class="block text-sm font-semibold text-charcoal mb-2" for="file_link">Link to drawings/specifications (Google Drive/Dropbox)</label>
-                                <input id="file_link" name="file_link" type="url" placeholder="https://drive.google.com/…" pattern="https?://.*" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent"/>
-                                <p class="text-xs text-gray-600/90 mt-1">Make sure sharing is set to <em>Anyone with the link – Viewer</em>.</p>
+                                <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="file_link">Link to drawings/specifications (Google Drive/Dropbox)</label>
+                                <input id="file_link" name="file_link" type="url" placeholder="https://drive.google.com/…" pattern="https?://.*" class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                <p class="text-xs text-gray-600/90 mt-1 dark:text-gray-400">Make sure sharing is set to <em>Anyone with the link – Viewer</em>.</p>
                             </div>
 
                             <div class="flex items-center">
                                 <input id="want_datasheets" type="checkbox" name="want_datasheets" value="yes" class="mr-3 accent-corporate-blue"/>
-                                <label for="want_datasheets" class="text-sm text-charcoal">Send me product datasheets</label>
+                                <label for="want_datasheets" class="text-sm text-charcoal dark:text-gray-200">Send me product datasheets</label>
                             </div>
 
                             <button type="submit" class="w-full bg-corporate-blue text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg">Submit RFQ</button>
@@ -503,57 +657,49 @@
     </div>
 </section>
 
-<!-- FAQ -->
+<!-- ===========================
+     FAQ
+     =========================== -->
 <section class="py-20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Frequently Asked Questions</h2>
+            <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4 dark:text-gray-100">Frequently Asked Questions</h2>
         </div>
         <div class="space-y-4">
-            <div class="bg-white border border-gray-200 rounded-lg">
-                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                    <span class="font-semibold text-charcoal">How do you ensure timely delivery, even for urgent requirements?</span>
-                    <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                </button>
+            <div class="bg-white border border-gray-200 rounded-lg dark:bg-white/5 dark:border-white/10">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger"><span class="font-semibold text-charcoal dark:text-gray-100">How do you ensure timely delivery, even for urgent requirements?</span><i class="fas fa-chevron-down text-gray-400 transition-transform"></i></button>
                 <div class="accordion-content px-6 pb-6">
-                    <p class="text-gray-600">We follow a well-coordinated production and dispatch schedule, supported by strong vendor relationships and optimized logistics planning, to meet even the most urgent timelines.</p>
+                    <p class="text-gray-600 dark:text-gray-300">We follow a well-coordinated production and dispatch schedule, supported by strong vendor relationships and optimized logistics planning, to meet even the most urgent timelines.</p>
                 </div>
             </div>
 
-            <div class="bg-white border border-gray-200 rounded-lg">
-                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                    <span class="font-semibold text-charcoal">How do you manage supply efficiency without warehouses in multiple states?</span>
-                    <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                </button>
+            <div class="bg-white border border-gray-200 rounded-lg dark:bg-white/5 dark:border-white/10">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger"><span class="font-semibold text-charcoal dark:text-gray-100">How do you manage supply efficiency without warehouses in multiple states?</span><i class="fas fa-chevron-down text-gray-400 transition-transform"></i></button>
                 <div class="accordion-content px-6 pb-6">
-                    <p class="text-gray-600">Our supply chain model is designed for direct-to-client efficiency, allowing us to ship fresh batches straight from production, ensuring speed and reduced storage costs.</p>
+                    <p class="text-gray-600 dark:text-gray-300">Our supply chain model is designed for direct-to-client efficiency, allowing us to ship fresh batches straight from production, ensuring speed and reduced storage costs.</p>
                 </div>
             </div>
 
-            <div class="bg-white border border-gray-200 rounded-lg">
-                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                    <span class="font-semibold text-charcoal">How does Supreme Group maintain high production capacity across its product range?</span>
-                    <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                </button>
+            <div class="bg-white border border-gray-200 rounded-lg dark:bg-white/5 dark:border-white/10">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger"><span class="font-semibold text-charcoal dark:text-gray-100">How does Supreme Group maintain high production capacity across its product range?</span><i class="fas fa-chevron-down text-gray-400 transition-transform"></i></button>
                 <div class="accordion-content px-6 pb-6">
-                    <p class="text-gray-600">We operate with flexible production lines and precision tooling systems, enabling us to handle large volumes while maintaining quality and product consistency.</p>
+                    <p class="text-gray-600 dark:text-gray-300">We operate with flexible production lines and precision tooling systems, enabling us to handle large volumes while maintaining quality and product consistency.</p>
                 </div>
             </div>
 
-            <div class="bg-white border border-gray-200 rounded-lg">
-                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                    <span class="font-semibold text-charcoal">What quality control measures ensure consistency and reliability?</span>
-                    <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                </button>
+            <div class="bg-white border border-gray-200 rounded-lg dark:bg-white/5 dark:border-white/10">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger"><span class="font-semibold text-charcoal dark:text-gray-100">What quality control measures ensure consistency and reliability?</span><i class="fas fa-chevron-down text-gray-400 transition-transform"></i></button>
                 <div class="accordion-content px-6 pb-6">
-                    <p class="text-gray-600">Every batch undergoes rigorous inspection at multiple stages, with testing protocols aligned to industry standards and tailored to client-specific requirements. All our products are non-hazardous plastic components with full material traceability.</p>
+                    <p class="text-gray-600 dark:text-gray-300">Every batch undergoes rigorous inspection at multiple stages, with testing protocols aligned to industry standards and tailored to client-specific requirements. All our products are non-hazardous plastic components with full material traceability.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ===========================
+     FOOTER
+     =========================== -->
 <footer class="text-white w-full">
     <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-[#111315]/95 backdrop-blur-xl ring-1 ring-white/10 shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.5)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -562,13 +708,9 @@
                     <h3 class="text-2xl font-bold mb-4">Supreme Group</h3>
                     <p class="text-white/80 mb-4">Precision Films & Industrial Components For Reliable Supply Chains.</p>
                     <div class="flex gap-3 items-center">
-                        <!-- use either these three icons OR replace with single chip button -->
                         <a href="#" class="text-white/80 hover:text-white" data-contact="whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp text-2xl"></i></a>
                         <a href="#" class="text-white/80 hover:text-white" data-contact="phone" aria-label="Phone"><i class="fas fa-phone text-2xl"></i></a>
                         <a href="#" class="text-white/80 hover:text-white" data-contact="email" aria-label="Email"><i class="fas fa-envelope text-2xl"></i></a>
-                        <!-- Or single pill:
-                        <button class="chip" data-contact="all"><i class="fa-solid fa-message"></i> Contact</button>
-                        -->
                     </div>
                 </div>
 
@@ -577,7 +719,8 @@
                     <div class="space-y-2 text-white/80">
                         <p><i class="fas fa-map-marker-alt mr-2"></i>Ghaziabad (Delhi-NCR), Uttar Pradesh</p>
                         <p><i class="fas fa-map-marker-alt mr-2"></i>IIDC KOSI KOTWAN - Mathura, Uttar Pradesh</p>
-                        <p><i class="fas fa-envelope mr-2"></i>info@supremegroup.in</p>
+                        <p><i class="fas fa-envelope mr-2"></i>supremelaminations@gmail.com</p>
+                        <p><i class="fas fa-envelope mr-2"></i>ajeetlalexplosives@gmail.com</p>
                         <p><i class="fas fa-phone mr-2"></i>+91-0120-3670745</p>
                     </div>
                 </div>
@@ -603,7 +746,9 @@
     </div>
 </footer>
 
-<!-- Contact Modal -->
+<!-- ===========================
+     CONTACT MODAL (markup)
+     =========================== -->
 <div class="contact-backdrop" id="contactBackdrop" aria-hidden="true"></div>
 <div class="contact-modal" id="contactModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
     <div class="contact-card">
@@ -662,6 +807,7 @@
                         <button class="chip" data-copy="supremelaminations@gmail.com"><i class="fa-regular fa-copy"></i> Copy</button>
                     </div>
                 </div>
+
                 <div class="contact-row">
                     <i class="fa-solid fa-envelope"></i>
                     <div>
@@ -678,31 +824,50 @@
     </div>
 </div>
 
-<!-- Scripts -->
+<!-- ===========================
+     SCRIPTS (modular, per feature)
+     =========================== -->
 <script>
-    // System-only dark mode (no toggle)
-    (function(){
-      const html = document.documentElement;
-      const mq = window.matchMedia('(prefers-color-scheme: dark)');
-      const apply = () => mq.matches ? html.classList.add('dark') : html.classList.remove('dark');
-      apply(); mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply);
+    /* 1) THEME ENGINE (Auto / Light / Dark) */
+    (function () {
+      const root = document.documentElement;
+      const mq   = window.matchMedia('(prefers-color-scheme: dark)');
+
+      function apply(mode) {
+        const dark = mode === 'dark' || (mode === 'auto' && mq.matches);
+        root.classList.toggle('dark', dark);
+        root.dataset.themeMode = mode;
+        try { localStorage.setItem('themeMode', mode); } catch {}
+      }
+      function syncSelect() {
+        const select = document.getElementById('themeSelect');
+        const current = root.dataset.themeMode || (localStorage.getItem('themeMode') || 'auto');
+        if (select && select.value !== current) select.value = current;
+      }
+      function bind() {
+        const select = document.getElementById('themeSelect');
+        if (select && !select._bound) {
+          select.addEventListener('change', () => apply(select.value));
+          select._bound = true;
+        }
+        syncSelect();
+      }
+      const onSysChange = () => {
+        if ((root.dataset.themeMode || 'auto') === 'auto') apply('auto');
+      };
+      mq.addEventListener ? mq.addEventListener('change', onSysChange) : mq.addListener(onSysChange);
+
+      apply(root.dataset.themeMode || (localStorage.getItem('themeMode') || 'auto'));
+      document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', bind, { once: true }) : bind();
     })();
 
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', (e) => {
-        const href = a.getAttribute('href');
-        if (href && href.length > 1) {
-          const target = document.querySelector(href);
-          if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-        }
-      });
-    });
-
-    // Accordion
-    window.toggleAccordion = (button) => {
-      const content = button.nextElementSibling;
-      const icon = button.querySelector('i');
+    /* 2) FAQ ACCORDION (delegated) */
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.accordion-trigger');
+      if (!btn) return;
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('i');
+      // close others
       document.querySelectorAll('.accordion-content').forEach(item => {
         if (item !== content) {
           item.classList.remove('active');
@@ -712,15 +877,16 @@
       });
       content.classList.toggle('active');
       if (icon) icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
-    };
+    });
 
-    // Contact modal wiring
-    (() => {
+    /* 3) CONTACT MODAL (single binder) */
+    (function(){
       const modal   = document.getElementById('contactModal');
       const back    = document.getElementById('contactBackdrop');
       const closeBt = document.getElementById('contactClose');
       const tabs    = Array.from(document.querySelectorAll('.contact-tabs .tab'));
       const panels  = Array.from(document.querySelectorAll('.contact-body .panel'));
+      if (!modal || !back || !closeBt || !tabs.length || !panels.length) return;
 
       function show(which='whatsapp'){
         modal.setAttribute('aria-hidden','false');
@@ -737,16 +903,20 @@
       function switchTab(which){
         tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab===which)));
         panels.forEach(p => p.hidden = (p.dataset.panel!==which));
-        document.getElementById('contactTitle').textContent =
-          which==='whatsapp' ? 'Chat on WhatsApp' :
-          which==='phone'    ? 'Call us'          : 'Send an Email';
+        const title = document.getElementById('contactTitle');
+        if (title) {
+          title.textContent =
+            which==='whatsapp' ? 'Chat on WhatsApp' :
+            which==='phone'    ? 'Call us'          : 'Send an Email';
+        }
       }
 
+      // open buttons anywhere: data-contact="whatsapp|phone|email|all"
       document.addEventListener('click', (e)=>{
         const btn = e.target.closest('[data-contact]');
         if(!btn) return;
         e.preventDefault();
-        const mode = btn.getAttribute('data-contact'); // 'whatsapp' | 'phone' | 'email' | 'all'
+        const mode = btn.getAttribute('data-contact');
         show(mode==='all' ? 'whatsapp' : mode);
       });
 
@@ -767,6 +937,33 @@
       document.addEventListener('keydown', (e)=>{
         if(e.key==='Escape' && modal.getAttribute('aria-hidden')==='false') hide();
       });
+    })();
+
+    /* 4) LIVE IST CLOCK (compact, resilient) */
+    (function(){
+      const el = document.getElementById('istClock');
+      if(!el) return;
+      const timeEl = el.querySelector('.time');
+
+      const fmtTime = new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      });
+      const fmtFull = new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata', weekday:'short', day:'2-digit', month:'short', year:'numeric',
+        hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+      });
+
+      function tick(){
+        const now = new Date();
+        timeEl.textContent = fmtTime.format(now);
+        el.title = 'IST — ' + fmtFull.format(now);
+      }
+      tick();
+      let timer = setInterval(tick, 1000);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden){ clearInterval(timer); }
+        else { tick(); timer = setInterval(tick, 1000); }
+      }, { passive: true });
     })();
 </script>
 </body>
