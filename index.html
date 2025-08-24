@@ -63,34 +63,96 @@
         }
 
         /* ===== Mobile polish (≤640px) ===== */
-@media (max-width: 640px){
-  /* Logo */
-  .logo-clip{ height:3.25rem; width:6.75rem; border-radius:22px; }
-  .logo-clip img{ height:120%; }
+        @media (max-width: 640px){
+          .logo-clip{ height:3.25rem; width:6.75rem; border-radius:22px; }
+          .logo-clip img{ height:120%; }
 
-  /* Brand text sizes */
-  .brand-title{ font-size:1.35rem; line-height:1.1; }
-  .brand-sub{ font-size:.80rem; }
+          .brand-title{ font-size:1.35rem; line-height:1.1; }
+          .brand-sub{ font-size:.80rem; }
 
-  /* Hero image: a bit taller and better crop on phone */
-  .hero-img{
-    height:70vh; min-height:560px;
-    object-position: 60% 35%;
-  }
+          .hero-img{
+            height:70vh; min-height:560px;
+            object-position: 60% 35%;
+          }
 
-  /* CTA block: centered under header, not covering machine */
-  .cta-wrap{
-    left:50%; right:auto; transform:translateX(-50%);
-    top: calc(72px + env(safe-area-inset-top, 0px));
-  }
-  .cta-btn{ width:min(88vw, 360px); }
+          .cta-wrap{
+            left:50%; right:auto; transform:translateX(-50%);
+            top: calc(72px + env(safe-area-inset-top, 0px));
+          }
+          .cta-btn{ width:min(88vw, 360px); }
 
-  /* Headline card: lighter + comfy margins on phone */
-  .glass-card{ background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); }
-  .glass-card h1{ font-size:1.6rem; }
-  .glass-card p{  font-size:1rem; }
-}
+          .glass-card{ background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); }
+          .glass-card h1{ font-size:1.6rem; }
+          .glass-card p{  font-size:1rem; }
+        }
+    </style>
 
+    <!-- ===== DARK MODE OVERRIDES (additive; light stays untouched) ===== -->
+    <style>
+        html.dark, html.dark body{
+          background:#0b0f14; color:#e5e7eb;
+        }
+        html.dark .sticky-header{
+          background:rgba(10,16,23,.55);
+          -webkit-backdrop-filter:saturate(160%) blur(14px);
+          backdrop-filter:saturate(160%) blur(14px);
+          border-bottom:1px solid rgba(255,255,255,.10);
+        }
+        html.dark .sticky-header a,
+        html.dark .brand-sub{ color:#e5e7eb !important; }
+
+        html.dark .glass-card{
+          background:rgba(0,0,0,.35);
+          border-color:rgba(255,255,255,.14);
+        }
+        html.dark .glass-card::before{
+          background:radial-gradient(140% 80% at 0% 0%, rgba(255,255,255,.10), transparent 50%);
+          opacity:.6;
+        }
+        html.dark .glass-card h1,
+        html.dark .glass-card p{ color:#fff; }
+
+        html.dark #products .grid > div{
+          background:rgba(255,255,255,.06) !important;
+          -webkit-backdrop-filter:blur(18px);
+          backdrop-filter:blur(18px);
+          border-color:rgba(255,255,255,.12) !important;
+        }
+        html.dark #products h3{ color:#fff; }
+        html.dark #products p{ color:rgba(255,255,255,.85); }
+
+        html.dark #about .rounded-2xl{
+          background:rgba(255,255,255,.06) !important;
+          border-color:rgba(255,255,255,.12) !important;
+        }
+        html.dark #about .shadow-xl{
+          background:rgba(17,24,39,.92) !important;
+          color:#e5e7eb;
+        }
+        html.dark #about p{ color:rgba(255,255,255,.85); }
+        html.dark #about h3.text-corporate-blue{ color:#93c5fd !important; }
+
+        html.dark #contact .rounded-2xl{
+          background:rgba(255,255,255,.06) !important;
+          border-color:rgba(255,255,255,.12) !important;
+        }
+        html.dark #contact label,
+        html.dark #contact .text-charcoal{ color:#e5e7eb !important; }
+        html.dark #contact input,
+        html.dark #contact textarea,
+        html.dark #contact select{
+          background:rgba(255,255,255,.05);
+          border-color:rgba(255,255,255,.15);
+          color:#e5e7eb;
+        }
+        html.dark #contact ::placeholder{ color:#9ca3af; }
+
+        html.dark section .bg-white.border{
+          background:rgba(31,41,55,.85) !important;
+          border-color:rgb(55 65 81) !important;
+        }
+        html.dark section .bg-white.border .text-charcoal{ color:#e5e7eb !important; }
+        html.dark .text-gray-600{ color:#cbd5e1 !important; }
     </style>
 </head>
 
@@ -101,9 +163,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
             <a href="#top" class="flex items-center gap-4">
-        <span class="logo-clip">
-          <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
-        </span>
+                <span class="logo-clip">
+                  <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo">
+                </span>
                 <div class="leading-tight">
                     <div class="font-bold brand-title">
                         <span class="text-corporate-blue text-3xl sm:text-3xl">Supreme</span>
@@ -113,15 +175,23 @@
                         Delivering Excellence Since 2007
                     </p>
                 </div>
-
             </a>
 
-            <nav class="hidden md:flex space-x-8">
+            <nav class="hidden md:flex items-center space-x-8">
                 <a href="#products"   class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Shock Tube Products</a>
                 <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Films &amp; Yarn</a>
                 <a href="#industries" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
                 <a href="#about"      class="text-charcoal hover:text-corporate-blue transition-colors font-bold">About</a>
                 <a href="#contact"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Contact</a>
+
+                <!-- Theme toggle -->
+                <button id="themeToggle"
+                        class="ml-2 rounded-lg px-3 py-2 text-sm font-semibold border border-black/10
+                               bg-white/60 text-charcoal hover:bg-black/5 transition"
+                        aria-label="Toggle color theme">
+                    <span id="themeLabel">Light</span>
+                    <i class="fa-solid fa-circle-half-stroke ml-2"></i>
+                </button>
             </nav>
         </div>
     </div>
@@ -131,7 +201,6 @@
 <section class="relative overflow-hidden">
     <img src="./assets/special-bg.png" alt="Background"
          class="hero-img w-full h-[86vh] min-h-[640px] object-cover object-center"/>
-
 
     <!-- CTAs -->
     <div class="absolute z-20 right-4 sm:right-8 lg:right-16 top-10 sm:top-14 lg:top-20
@@ -151,7 +220,6 @@
             <span>Product Datasheet</span>
         </a>
     </div>
-
 
     <!-- headline card -->
     <div class="absolute z-20 right-4 sm:right-8 lg:right-14 bottom-1 sm:bottom-2 lg:bottom-4
@@ -586,6 +654,41 @@
           icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
       };
+    })();
+</script>
+
+<!-- Tiny Theme Manager: Light → Dark → Auto -->
+<script>
+    (function(){
+      const KEY='themeMode';
+      const btn=document.getElementById('themeToggle');
+      const label=document.getElementById('themeLabel');
+      if(!btn||!label) return;
+
+      function osDark(){ return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
+      function effective(mode){ return mode==='auto' ? (osDark()?'dark':'light') : mode; }
+      function apply(mode){
+        const eff = effective(mode);
+        document.documentElement.classList.toggle('dark', eff==='dark');
+        label.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+      }
+      function next(mode){ return mode==='light' ? 'dark' : mode==='dark' ? 'auto' : 'light'; }
+
+      let mode = localStorage.getItem(KEY) || 'light';
+      apply(mode);
+
+      btn.addEventListener('click', ()=>{
+        mode = next(mode);
+        localStorage.setItem(KEY, mode);
+        apply(mode);
+      });
+
+      if(window.matchMedia){
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        (mq.addEventListener||mq.addListener).call(mq,'change', ()=>{
+          if((localStorage.getItem(KEY)||'light')==='auto') apply('auto');
+        });
+      }
     })();
 </script>
 </body>
