@@ -1,580 +1,1095 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Supreme Group - Precision Components & Industrial Film</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+
+    <!-- Security headers (meta-fallbacks). Prefer real HTTP headers in production. -->
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://cdn.tailwindcss.com 'nonce-sgNonce';
+    style-src  'self' 'unsafe-inline';
+    img-src    'self' data:;
+    font-src   'self' https://cdnjs.cloudflare.com;
+    connect-src 'self' https://formspree.io;
+    frame-src  'self';
+    object-src 'none';
+    base-uri   'self';
+    form-action https://formspree.io;
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+  ">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), interest-cohort=()">
+
+    <!-- EARLY THEME BOOT (prevents FOUC). Uses a static nonce for demo; rotate per request in prod. -->
+    <script nonce="sgNonce">
+        (function () {
+          const stored = localStorage.getItem('themeMode') || 'auto';
+          const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+          const dark = stored === 'dark' || (stored === 'auto' && prefersDark);
+          if (dark) document.documentElement.classList.add('dark');
+          document.documentElement.dataset.themeMode = stored;
+        })();
+    </script>
+
+    <!-- Tailwind CDN (runtime compiler). Secure note:
+         - Best practice is to precompile Tailwind and self-host (then remove 'unsafe-inline' from style-src).
+         - The runtime CDN can't reliably use SRI because the script produces dynamic CSS at runtime. -->
+    <script src="https://cdn.tailwindcss.com" nonce="sgNonce"></script>
+    <script nonce="sgNonce">
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'corporate-blue': '#1F6FEB',
-                        'safety-green': '#12B76A',
-                        'charcoal': '#1E1E1E'
-                    }
-                }
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                'corporate-blue': '#1F6FEB',
+                'safety-green': '#12B76A',
+                'charcoal': '#1E1E1E',
+              }
             }
+          }
         }
     </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .hero-bg {
-            background: linear-gradient(135deg, rgba(31, 111, 235, 0.05) 0%, rgba(18, 183, 106, 0.05) 100%),
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23E5E7EB" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+
+    <!-- Font Awesome (optional). If you keep it, add SRI from cdnjs and keep crossorigin.
+         Example (do NOT copy this integrity blindly): integrity="<PASTE_SRI_FROM_CDNJS>" crossorigin="anonymous"
+         Most secure option is to inline the few SVG icons you use and remove this external dependency. -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+
+    <style nonce="sgNonce">
+        /* ====== Base dark surface + tweaks ====== */
+        html.dark body{ background:#0b0d0f; color:#e5e7eb; }
+        html.dark .text-charcoal{ color:#e5e7eb; }
+        html.dark .sticky-header{ background:rgba(10,12,14,.45); border-bottom-color:rgba(255,255,255,.12); }
+        html.dark .glass-card{ border-color:rgba(255,255,255,.22); background:rgba(255,255,255,.08); }
+        html.dark .glass-card::before{ opacity:.25; }
+
+        /* ===== Glass card & header ===== */
+        .glass-card{
+          position:relative;border-radius:16px;
+          background:rgba(255,255,255,.06);
+          -webkit-backdrop-filter:blur(30px) saturate(180%);
+          backdrop-filter:blur(30px) saturate(180%);
+          border:1px solid rgba(255,255,255,.18);
+          box-shadow:0 15px 40px -10px rgba(0,0,0,.35);
         }
-       
-        .sticky-header {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+        .glass-card::before{
+          content:"";position:absolute;inset:0;border-radius:inherit;
+          background:radial-gradient(140% 80% at 0% 0%, rgba(255,255,255,.28), transparent 50%);
+          pointer-events:none;opacity:.45;
         }
-       
-        .card-hover {
-            transition: all 0.3s ease;
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+          .glass-card{background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.28)}
+          .glass-card::before{opacity:.30}
         }
-       
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        .sticky-header{
+          background:rgba(255,255,255,.28);
+          -webkit-backdrop-filter:saturate(160%) blur(14px);
+          backdrop-filter:saturate(160%) blur(14px);
+          border-bottom:1px solid rgba(255,255,255,.35);
         }
-       
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
+
+        .accordion-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
+        .accordion-content.active{max-height:200px}
+
+        .logo-clip{
+          height:4.75rem;width:9.5rem;border-radius:9999px;
+          background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.45);
+          box-shadow:0 10px 30px -10px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.35);
+          overflow:hidden;display:flex;align-items:center;justify-content:center;
         }
-       
-        .accordion-content.active {
-            max-height: 200px;
+        .logo-clip img{
+          width:auto;height:135%;object-fit:cover;clip-path:ellipse(47% 42% at 50% 50%);
+          transform:translateY(1px);user-select:none;pointer-events:none;
         }
+
+        /* Remove inline style attrs → background images as classes (CSP-friendly) */
+        .bg-films-yarn{
+          background-image:url('./assets/829BDC6D-593F-433C-9D06-33EEC5289B54.PNG');
+          background-size:cover;background-position:center;
+        }
+        .bg-industries{
+          background-image:url('./assets/10C3658C-062D-43D9-AA07-A2F2F579DED0.PNG');
+          background-size:cover;background-position:center;
+        }
+
+        /* ====== Mobile polish (≤640px) ====== */
+        @media (max-width: 640px){
+          .logo-clip{ height:3.25rem; width:6.75rem; border-radius:22px; }
+          .logo-clip img{ height:120%; }
+          .brand-title{ font-size:1.35rem; line-height:1.1; }
+          .brand-sub{ font-size:.80rem; }
+          .hero-img{ height:70vh; min-height:560px; object-position: 60% 35%; }
+          .cta-wrap{ left:50%; right:auto; transform:translateX(-50%); top: calc(72px + env(safe-area-inset-top, 0px)); }
+          .cta-btn{ width:min(88vw, 360px); }
+          .glass-card{ background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); }
+          .glass-card h1{ font-size:1.6rem; }
+          .glass-card p{  font-size:1rem; }
+        }
+
+        /* ===== Contact Modal (glass) ===== */
+        .contact-backdrop{
+          position:fixed; inset:0; z-index:60; display:none;
+          background:rgba(0,0,0,.45);
+          backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        }
+        .contact-backdrop[aria-hidden="false"]{ display:block; }
+
+        .contact-modal{ position:fixed; inset:0; z-index:70; display:none; place-items:center; padding:24px; }
+        .contact-modal[aria-hidden="false"]{ display:grid; }
+
+        .contact-card{
+          width:min(560px, 94vw); border-radius:18px; position:relative;
+          background:rgba(255,255,255,.14);
+          border:1px solid rgba(255,255,255,.38);
+          box-shadow:0 30px 80px -20px rgba(0,0,0,.45);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          backdrop-filter: blur(24px) saturate(160%);
+          overflow:hidden;
+        }
+        .contact-card:before{
+          content:""; position:absolute; inset:0; pointer-events:none;
+          background:radial-gradient(140% 80% at -10% -20%, rgba(255,255,255,.45), transparent 55%);
+        }
+        .contact-header{ display:flex; align-items:center; justify-content:space-between; padding:16px 20px; gap:12px; }
+        .contact-title{ font-weight:800; font-size:1.15rem }
+        .icon-btn{
+          display:inline-flex; align-items:center; justify-content:center;
+          height:38px; width:38px; border-radius:10px; border:1px solid rgba(0,0,0,.06);
+          background:rgba(255,255,255,.75); box-shadow:0 6px 20px -8px rgba(0,0,0,.45);
+        }
+        .icon-btn:hover{ background:#fff }
+        .contact-body{ padding:10px 20px 20px; }
+
+        .contact-tabs{ display:flex; gap:8px; padding:0 20px 12px; }
+        .tab{
+          flex:1; padding:10px 12px; text-align:center; font-weight:600; border-radius:10px;
+          border:1px solid rgba(0,0,0,.06); background:rgba(255,255,255,.8); cursor:pointer;
+        }
+        .tab[aria-selected="true"]{ background:#1F6FEB; color:#fff; border-color:transparent; }
+
+        .contact-row{
+          display:flex; align-items:center; gap:12px;
+          background:rgba(255,255,255,.82); border:1px solid rgba(0,0,0,.06);
+          border-radius:12px; padding:12px 14px; margin-top:10px;
+        }
+        .contact-row .actions{ margin-left:auto; display:flex; gap:8px }
+        .chip{
+          display:inline-flex; align-items:center; gap:8px; padding:8px 12px;
+          border-radius:999px; font-weight:600; border:1px solid rgba(0,0,0,.06); background:#fff;
+        }
+
+        /* Dark variant */
+        html.dark .contact-card{ background:rgba(16,22,28,.65); border-color:rgba(255,255,255,.15); }
+        html.dark .icon-btn{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.15); color:#e5e7eb }
+        html.dark .icon-btn:hover{ background:rgba(255,255,255,.14) }
+        html.dark .tab{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); color:#e5e7eb }
+        html.dark .contact-row, html.dark .chip{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); color:#e5e7eb }
+
+        /* ====== MOBILE CONTACT SHEET POLISH (≤480px) ====== */
+        @media (max-width: 480px){
+          .contact-modal{ align-items:end; padding:0; }
+          .contact-card{ width:100vw; max-width:100vw; border-radius:18px 18px 0 0; margin:0; transform:translateZ(0); }
+          .contact-header{ padding:16px 20px 12px; padding-top:calc(12px + env(safe-area-inset-top, 0px)); }
+          .contact-body{ padding:12px 16px calc(16px + env(safe-area-inset-bottom, 0px)); overflow:auto; max-height:min(72vh,560px); }
+          .contact-tabs{ padding:6px 16px 10px; gap:10px; }
+          .contact-tabs .tab{ display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 10px; border-radius:14px; font-size:13px; line-height:1.1; height:74px; user-select:none; -webkit-tap-highlight-color:transparent; }
+          .contact-tabs .tab i{ font-size:22px; margin-right:0 !important; }
+          .contact-tabs .tab[aria-selected="true"]{ box-shadow:0 6px 18px -8px rgba(31,111,235,.55); }
+          .contact-row{ padding:12px; gap:10px; }
+          .contact-row .actions{ gap:6px; flex-shrink:0; }
+          .chip{ padding:8px 10px; font-size:12.5px; white-space:nowrap; }
+          .chip i{ font-size:12px; }
+          #contactClose.icon-btn{ width:42px; height:42px; border-radius:12px; }
+          .contact-backdrop{ background:rgba(0,0,0,.55); }
+        }
+        @media (max-width: 360px){
+          .contact-tabs .tab{ height:70px; font-size:12px; }
+          .contact-tabs .tab i{ font-size:20px; }
+          .contact-row{ padding:10px; }
+          .chip{ padding:7px 9px; font-size:12px; }
+        }
+
+        /* Desktop hover */
+        @media (hover:hover){
+          .contact-tabs .tab:hover{
+            background: rgba(31,111,235,.10);
+            border-color: rgba(31,111,235,.28);
+            box-shadow: 0 10px 26px -14px rgba(31,111,235,.55);
+          }
+          .chip:hover{ background:#1F6FEB; color:#fff; }
+          .chip:hover i{ opacity:.95; }
+        }
+        .contact-tabs .tab[aria-selected="true"]{
+          background:#1F6FEB; color:#fff; border-color:transparent;
+          box-shadow:0 12px 28px -12px rgba(31,111,235,.65);
+        }
+        .contact-tabs .tab:focus-visible, .chip:focus-visible{
+          outline:2px solid #1F6FEB; outline-offset:2px;
+          box-shadow:0 0 0 4px rgba(31,111,235,.20); border-radius:14px;
+        }
+        .contact-tabs .tab:active{ transform:translateY(1px); filter:saturate(1.05); }
+        .chip:active{ transform:translateY(1px); background:#1F6FEB; color:#fff; }
+        .contact-tabs .tab,.chip,.icon-btn{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+
+        /* ===== Compact IST Clock chip ===== */
+        .clock-chip{
+          display:inline-flex; align-items:center; gap:6px;
+          padding:6px 8px; border-radius:999px;
+          font-weight:600; font-size:12px; line-height:1;
+          background:rgba(255,255,255,.6);
+          border:1px solid rgba(0,0,0,.06);
+          box-shadow:0 8px 24px -10px rgba(0,0,0,.35);
+          -webkit-backdrop-filter:saturate(160%) blur(10px);
+          backdrop-filter:saturate(160%) blur(10px);
+          white-space:nowrap; user-select:none;
+          font-variant-numeric: tabular-nums;
+        }
+        .clock-chip i{ font-size:12px; opacity:.85 }
+        .clock-chip .label{ letter-spacing:.35px; opacity:.85 }
+        .clock-chip .dot{ opacity:.6 }
+        .clock-chip .time{ font-weight:800; }
+        @media (min-width: 640px){ .clock-chip{ font-size:13px; padding:6px 10px; gap:7px; } }
+        @media (min-width: 768px){ .clock-chip{ font-size:14px; padding:7px 11px; } }
+        html.dark .clock-chip{
+          background:rgba(255,255,255,.10);
+          border-color:rgba(255,255,255,.14);
+          color:#e5e7eb;
+        }
+        @media (hover:hover){
+          .clock-chip:hover{
+            box-shadow:0 12px 30px -12px rgba(31,111,235,.45);
+            border-color:rgba(31,111,235,.25);
+          }
+        }
+
+        /* Extra-compact override */
+        .clock-chip{ padding:4px 8px !important; font-size:12px !important; gap:6px !important; }
+        .clock-chip i{ font-size:12px !important; }
+        @media (max-width:380px){ .clock-chip{ font-size:11px !important; padding:4px 7px !important; } }
     </style>
 </head>
+
 <body class="bg-white text-charcoal">
-    <!-- Sticky Header -->
-    <header class="sticky top-0 z-50 sticky-header border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-charcoal">Supreme Group</h1>
-                </div>
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#products" class="text-charcoal hover:text-corporate-blue transition-colors">Products</a>
-                    <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors">Films & Yarn</a>
-                    <a href="#quality" class="text-charcoal hover:text-corporate-blue transition-colors">Quality</a>
-                    <a href="#clients" class="text-charcoal hover:text-corporate-blue transition-colors">Clients</a>
-                    <a href="#about" class="text-charcoal hover:text-corporate-blue transition-colors">About</a>
-                    <a href="#contact" class="text-charcoal hover:text-corporate-blue transition-colors">Contact</a>
-                </nav>
-                <button class="md:hidden">
-                    <i class="fas fa-bars text-charcoal"></i>
-                </button>
-            </div>
-        </div>
-    </header>
+<div id="top"></div>
 
-    <!-- Hero Section -->
-    <section class="hero-bg py-20 lg:py-32">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl lg:text-6xl font-bold text-charcoal mb-6">
-                    Precision Components.<br>Consistent Supply.
-                </h1>
-                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                    Non-hazardous industrial parts, films & yarn—engineered for reliability.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#contact" class="bg-corporate-blue text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                        Request a Quote
-                    </a>
-                    <button class="bg-safety-green text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-colors">
-                        Product Datasheets
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Industrial Components</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Precision-engineered non-hazardous plastic components for industrial applications</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                    <div class="text-corporate-blue text-4xl mb-4">
-                        <i class="fas fa-industry"></i>
+<!-- HEADER -->
+<header class="sticky top-0 z-50 sticky-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-24 gap-3 md:gap-4">
+            <a href="#top" class="flex items-center gap-4" aria-label="Go to top">
+        <span class="logo-clip">
+          <img src="assets/ChatGPT Image Aug 20, 2025 at 11_21_08 PM.png" alt="SL logo" loading="eager" decoding="async">
+        </span>
+                <div class="leading-tight">
+                    <div class="font-bold brand-title">
+                        <span class="text-corporate-blue text-3xl sm:text-3xl">Supreme</span>
+                        <span class="text-safety-green text-3xl sm:text-3xl">Group</span>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Non-Electric Detonator Housings</h3>
-                    <p class="text-gray-600 text-sm mb-4">Outer plastic casings only - precision moulded for industrial use</p>
-                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                        Enquire
-                    </button>
+                    <p class="brand-sub text-sm md:text-base text-gray-700/90 italic -mt-0.5 dark:text-gray-300/90">
+                        Delivering Excellence Since 2007
+                    </p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                    <div class="text-corporate-blue text-4xl mb-4">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">STL Connectors & Sleeves</h3>
-                    <p class="text-gray-600 text-sm mb-4">High-precision connectors for industrial applications</p>
-                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                        Enquire
-                    </button>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                    <div class="text-corporate-blue text-4xl mb-4">
-                        <i class="fas fa-circle"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Booster Cups</h3>
-                    <p class="text-gray-600 text-sm mb-4">Plastic booster cups manufactured to exact specifications</p>
-                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                        Enquire
-                    </button>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
-                    <div class="text-corporate-blue text-4xl mb-4">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Custom Moulded Parts</h3>
-                    <p class="text-gray-600 text-sm mb-4">Precision moulded components to your specifications</p>
-                    <button class="bg-corporate-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                        Enquire
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Films & Yarn Section -->
-    <section id="films-yarn" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Films & Yarn</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">High-quality packaging films and reinforcement yarn</p>
-            </div>
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-thread"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4">Fibrillated PP Yarn</h3>
-                    <ul class="text-gray-600 mb-6 space-y-2">
-                        <li>• High-strength bundling applications</li>
-                        <li>• Reinforcement for composite materials</li>
-                        <li>• UV stabilized options available</li>
-                        <li>• Custom denier specifications</li>
-                    </ul>
-                    <div class="bg-gray-50 p-4 rounded">
-                        <h4 class="font-semibold mb-2">Typical Specifications</h4>
-                        <table class="w-full text-sm">
-                            <tr><td>Denier Range:</td><td>500-2000</td></tr>
-                            <tr><td>Tensile Strength:</td><td>4-6 g/denier</td></tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-film"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4">Slitted BOPP Films</h3>
-                    <ul class="text-gray-600 mb-6 space-y-2">
-                        <li>• Packaging and lamination applications</li>
-                        <li>• Precise width tolerances</li>
-                        <li>• Food-grade options available</li>
-                        <li>• Custom printing capabilities</li>
-                    </ul>
-                    <div class="bg-gray-50 p-4 rounded">
-                        <h4 class="font-semibold mb-2">Available Specifications</h4>
-                        <table class="w-full text-sm">
-                            <tr><td>Width Range:</td><td>12mm - 1600mm</td></tr>
-                            <tr><td>Thickness:</td><td>12-50 microns</td></tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quality & Compliance -->
-    <section id="quality" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Quality & Compliance</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Rigorous quality control and compliance standards</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Material Traceability</h3>
-                    <p class="text-gray-600">Complete batch tracking from raw materials to finished products</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-ruler"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Dimensional Tolerance</h3>
-                    <p class="text-gray-600">Precision manufacturing with tight tolerance controls</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-clipboard-check"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Batch QC Testing</h3>
-                    <p class="text-gray-600">Every batch tested for quality and consistency</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">RoHS/REACH Compliant</h3>
-                    <p class="text-gray-600">Environmental compliance where applicable</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">Non-Hazardous Components</h3>
-                    <p class="text-gray-600">All products are non-hazardous plastic components only</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-safety-green text-4xl mb-4">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">ISO Standards</h3>
-                    <p class="text-gray-600">Manufacturing processes follow international standards</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Who We Serve -->
-    <section class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Industries We Serve</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Trusted by leading companies across multiple industries</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-mountain"></i>
-                    </div>
-                    <h3 class="font-semibold">Mining</h3>
-                </div>
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-hammer"></i>
-                    </div>
-                    <h3 class="font-semibold">Quarrying</h3>
-                </div>
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <h3 class="font-semibold">Construction</h3>
-                </div>
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-cog"></i>
-                    </div>
-                    <h3 class="font-semibold">OEMs</h3>
-                </div>
-                <div class="text-center">
-                    <div class="text-corporate-blue text-5xl mb-4">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <h3 class="font-semibold">Packaging</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">About Supreme Group</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">A legacy of precision manufacturing with a vision for the future</p>
-            </div>
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-semibold mb-4 text-corporate-blue">Supreme Laminations</h3>
-                    <p class="text-gray-600 mb-4">Our legacy partnership firm with decades of experience in precision manufacturing and lamination processes.</p>
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-corporate-blue rounded-full mr-3"></div>
-                            <span>Established manufacturing expertise</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-corporate-blue rounded-full mr-3"></div>
-                            <span>Proven track record in industrial components</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-semibold mb-4 text-safety-green">Ananya Engineered Industrial Components & Pay Systems LLP</h3>
-                    <p class="text-gray-600 mb-4">Our parent holding company, positioned for future growth in industrial components and internal pay systems development.</p>
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-safety-green rounded-full mr-3"></div>
-                            <span>Modern corporate structure</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-safety-green rounded-full mr-3"></div>
-                            <span>Future-ready for technology integration</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Client Testimonials -->
-    <section id="clients" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Trusted by Industry Leaders</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Our clients rely on us for consistent quality and reliable supply</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 font-semibold">Client Logo 1</span>
-                </div>
-                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 font-semibold">Client Logo 2</span>
-                </div>
-                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 font-semibold">Client Logo 3</span>
-                </div>
-                <div class="bg-gray-100 h-24 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 font-semibold">Client Logo 4</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Band -->
-    <section class="py-16 bg-corporate-blue">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">Looking for consistent supply?</h2>
-            <p class="text-blue-100 mb-8 max-w-2xl mx-auto">Get in touch with our team for custom quotes and technical specifications</p>
-            <a href="#contact" class="bg-white text-corporate-blue px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
-                Get Quote Now
             </a>
-        </div>
-    </section>
 
-    <!-- Contact & RFQ Form -->
-    <section id="contact" class="py-20 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Request for Quote</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Tell us about your requirements and we'll get back to you with a detailed quote</p>
+            <div class="flex items-center gap-3 md:gap-4">
+                <nav class="hidden md:flex space-x-8" aria-label="Primary">
+                    <a href="#products"   class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Shock Tube Products</a>
+                    <a href="#films-yarn" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Films &amp; Yarn</a>
+                    <a href="#industries" class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Quality</a>
+                    <a href="#about"      class="text-charcoal hover:text-corporate-blue transition-colors font-bold">About</a>
+                    <a href="#contact"    class="text-charcoal hover:text-corporate-blue transition-colors font-bold">Contact</a>
+                </nav>
+
+                <!-- IST Clock chip -->
+                <div id="istClock" class="clock-chip" aria-live="polite" aria-label="Current time in IST">
+                    <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                    <span class="label">IST</span><span class="dot" aria-hidden="true">•</span>
+                    <span class="time">--:--:--</span>
+                </div>
+
+                <!-- THEME TOGGLE -->
+                <label class="sr-only" for="themeSelect">Theme</label>
+                <select id="themeSelect"
+                        class="ml-2 rounded-lg border border-white/60 bg-white/80 px-3 py-2 text-sm shadow
+                 dark:bg-white/10 dark:text-gray-100 dark:border-white/20">
+                    <option value="auto">Auto</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
             </div>
-            <form class="bg-white p-8 rounded-lg shadow-md">
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Name *</label>
-                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+        </div>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="relative overflow-hidden">
+    <img src="./assets/special-bg.png" alt="Background"
+         class="hero-img w-full h-[86vh] min-h-[640px] object-cover object-center" loading="lazy" decoding="async"/>
+
+    <!-- CTAs -->
+    <div class="absolute z-20 right-4 sm:right-8 lg:right-16 top-10 sm:top-14 lg:top-20
+              flex flex-col sm:flex-row gap-4 items-stretch cta-wrap">
+        <a href="#contact"
+           class="cta-btn bg-corporate-blue text-white px-8 py-5 sm:px-10 sm:py-5 rounded-xl font-semibold
+              hover:bg-blue-700 transition-colors shadow-lg text-lg sm:text-xl text-center">
+            Request a Quote
+        </a>
+
+        <a id="datasheetsBtn" href="./assets/product-datasheet.pdf#view=FitH&toolbar=1"
+           target="_blank" rel="noopener noreferrer"
+           class="cta-btn inline-flex items-center justify-center gap-3 rounded-xl px-8 py-5 sm:px-10 sm:py-5
+              font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-lg
+              text-lg sm:text-xl">
+            <i class="fa-solid fa-file-pdf text-xl sm:text-2xl" aria-hidden="true"></i>
+            <span>Product Datasheet</span>
+        </a>
+    </div>
+
+    <!-- Headline card -->
+    <div class="absolute z-20 right-4 sm:right-8 lg:right-14 bottom-1 sm:bottom-2 lg:bottom-4
+              w-[min(92vw,620px)] md:w-[560px] lg:w-[600px]">
+        <div class="glass-card px-8 sm:px-10 py-8 sm:py-10">
+            <div class="text-center">
+                <h1 class="font-extrabold text-charcoal leading-tight mb-4 text-3xl sm:text-4xl lg:text-[40px] dark:text-gray-100">
+                    Industrial Precision.<br/>Consistent Supply.
+                </h1>
+                <p class="text-base sm:text-lg lg:text-xl text-gray-900/90 dark:text-gray-200/90">
+                    Serving India's Industrial Explosive Sector With Pride.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" class="py-20 relative bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.10),transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.18),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.14),transparent_60%)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl dark:bg-white/10 dark:ring-white/10">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Non-Electric Detonator Housings</h3>
+                    <p class="text-gray-700 text-sm dark:text-gray-300">Outer Housing, Precision Moulded For Commercial Explosives.</p>
+                </div>
+                <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
+            </div>
+
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl dark:bg-white/10 dark:ring-white/10">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">STL Connectors & Sleeves</h3>
+                    <p class="text-gray-700 text-sm dark:text-gray-300">High Precision Connectors For Industrial Applications.</p>
+                </div>
+                <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
+            </div>
+
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl dark:bg-white/10 dark:ring-white/10">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Cast Booster Cups</h3>
+                    <p class="text-gray-700 text-sm dark:text-gray-300">Customised Specifications For Durability.</p>
+                </div>
+                <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
+            </div>
+
+            <div class="h-full flex flex-col justify-between rounded-xl p-5 shadow-xl ring-1 bg-white/30 backdrop-blur-lg ring-white/50 transition-all hover:-translate-y-0.5 hover:shadow-2xl dark:bg-white/10 dark:ring-white/10">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2 dark:text-gray-100">Customise Moulded Components</h3>
+                    <p class="text-gray-700 text-sm dark:text-gray-300">Crafted With Precision For Export Grade.</p>
+                </div>
+                <a href="#contact" class="mt-5 self-start bg-corporate-blue text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-md">Enquire</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FILMS & YARN -->
+<section id="films-yarn" class="relative py-20 bg-films-yarn">
+    <div class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white drop-shadow mb-4"> BOPP/Polyester Films &amp; PP Yarn</h2>
+            <p class="text-gray-100 max-w-2xl mx-auto drop-shadow">Precision High-Quality Films &amp; Fibrillated Yarn</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12 items-stretch">
+            <div class="h-full flex flex-col rounded-2xl p-8 bg-white/20 backdrop-blur-xl ring-1 ring-white/30 border border-white/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)]">
+                <h3 class="text-2xl font-semibold text-white mb-4">Fibrillated PP Yarn</h3>
+                <ul class="text-white/90 leading-relaxed space-y-2 mb-6 list-disc pl-5">
+                    <li>Custom tensile strength braid reinforcement for durable use.</li>
+                    <li>Flexible, abrasion-resistant wrapping suitable for high-speed braiding lines.</li>
+                    <li>Resistant to chemicals and UV for long-term outdoor storage and field use.</li>
+                    <li>Maintains flexibility in low-temperature environments.</li>
+                    <li>Available in customised spool configurations.</li>
+                    <li>Precisely wound for optimal handling and consistent feed.</li>
+                </ul>
+                <div class="mt-auto bg-white/30 backdrop-blur-md p-4 rounded">
+                    <h4 class="font-semibold mb-2 text-white">Typical Specifications</h4>
+                    <table class="w-full text-sm text-white/90">
+                        <tr><td>Denier Range:</td><td class="text-right">500 – 8000</td></tr>
+                        <tr><td>GPD / Tenacity:</td><td class="text-right">4.0 – 5.0</td></tr>
+                        <tr><td>Elongation:</td><td class="text-right">8.0 – 25.0</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="h-full flex flex-col rounded-2xl p-8 bg-white/20 backdrop-blur-xl ring-1 ring-white/30 border border-white/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)]">
+                <h3 class="text-2xl font-semibold text-white mb-4">Slitted BOPP/Polyester Films</h3>
+                <ul class="text-white/90 leading-relaxed space-y-2 mb-6 list-disc pl-5">
+                    <li>Spiral-wrapped protective layer for strength and integrity.</li>
+                    <li>Moisture-resistant barrier against humidity and ingress.</li>
+                    <li>Intermediate jacket between braid and sheath.</li>
+                    <li>Maintains dimensional stability for uniform velocity.</li>
+                    <li>Precise slit widths for minimal waste.</li>
+                    <li>Antistatic properties for ESD prevention.</li>
+                    <li>Stable static-control across conditions.</li>
+                    <li>Reduces dust attraction during processing.</li>
+                </ul>
+                <div class="mt-auto bg-white/30 backdrop-blur-md p-4 rounded">
+                    <h4 class="font-semibold mb-2 text-white">Available Specifications</h4>
+                    <table class="w-full text-sm text-white/90">
+                        <tr><td>Width Range:</td><td class="text-right">8mm – 1600mm</td></tr>
+                        <tr><td>Thickness:</td><td class="text-right">12 – 50 microns</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Curved separator -->
+<div class="absolute -top-[1px] left-0 right-0 overflow-hidden leading-none z-0">
+    <svg class="block w-full h-[72px] text-white" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="currentColor" d="M0,64 C240,16 480,16 720,48 C960,80 1200,80 1440,48 L1440,0 L0,0 Z"></path>
+    </svg>
+</div>
+
+<!-- INDUSTRIES -->
+<section id="industries" class="relative py-20 bg-industries">
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent z-0 dark:from-[#0b0d0f]"></div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent z-0 dark:from-[#0b0d0f]"></div>
+    <div class="absolute inset-0 bg-black/35"></div>
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.22),transparent_60%)]"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white drop-shadow-md">Industries We Serve</h2>
+            <p class="mt-3 text-white/90 drop-shadow">Trusted by leading companies across multiple industries</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8">
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-mountain text-3xl text-[#1F6FEB] drop-shadow" aria-hidden="true"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Mining</h3>
+            </div>
+
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-hammer text-3xl text-[#1F6FEB] drop-shadow" aria-hidden="true"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Quarrying</h3>
+            </div>
+
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-building text-3xl text-[#1F6FEB] drop-shadow" aria-hidden="true"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Construction</h3>
+            </div>
+
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-cog text-3xl text-[#1F6FEB] drop-shadow" aria-hidden="true"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Specialised Industrial<br class="hidden md:block"/> Applications</h3>
+            </div>
+
+            <div class="group text-center rounded-2xl px-4 py-6 bg-white/15 backdrop-blur-lg ring-1 ring-white/25 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+                <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-white/20 ring-1 ring-white/30">
+                    <i class="fas fa-box text-3xl text-[#1F6FEB] drop-shadow" aria-hidden="true"></i>
+                </div>
+                <h3 class="font-semibold text-white tracking-wide">Packaging</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT + CONTACT -->
+<section id="about" class="py-20 bg-gray-50 dark:bg-[#0d1117]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto space-y-10">
+            <div class="rounded-2xl shadow-2xl p-8 lg:p-10 bg-white/30 backdrop-blur-xl border border-white/40 dark:bg-white/5 dark:border-white/10">
+                <h3 class="text-2xl font-semibold mb-4 text-corporate-blue">Supreme Laminations</h3>
+                <p class="text-gray-700 leading-relaxed mb-6 dark:text-gray-300">
+                    Supreme Lamination was established under the leadership of Mr. Ajeet Lal with the objective of manufacturing and supplying reliable industrial components that meet the specific needs of customers across India. The company began its journey with a modest setup and a focused product range, operating with the principle that consistent quality and timely delivery are the keys to building trust in the market.
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-6 dark:text-gray-300">
+                    From the initial stages, Mr. Aje Lal has been personally involved in all aspects of the business, from evaluating raw material quality, supervising manufacturing processes, and ensuring precision in moulding, to managing logistics and responding to urgent customer requirements. This hands-on management style has allowed the company to maintain strict control over quality and delivery schedules, even in challenging circumstances.
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-6 dark:text-gray-300">
+                    Supreme Lamination operates with advanced injection moulding and blow moulding machines, enabling the production of a wide variety of precision components. The company’s product range serves multiple industrial sectors, where durability, dimensional accuracy, and consistent performance are essential. Every product is subject to quality checks at various stages, ensuring compliance with customer specifications and industry standards.
+                </p>
+                <p class="text-gray-700 leading-relaxed dark:text-gray-300">
+                    Looking ahead, Supreme Lamination aims to strengthen its manufacturing capabilities, explore new product lines, and expand its reach to serve a wider market. While the company continues to adapt to changing market demands, it remains committed to the three core principles laid down by Mr. Ajeet Lal: integrity, reliability, and delivering products that meet or exceed customer expectations.
+                </p>
+            </div>
+
+            <div class="rounded-2xl shadow-xl p-8 lg:p-10 bg-white dark:bg-white/5 dark:border dark:border-white/10">
+                <h3 class="text-2xl font-semibold mb-6 text-[#009245]">
+                    Ananya Engineered Industrial Components &amp; Pay Systems LLP. (SPECIAL)
+                </h3>
+
+                <div class="grid lg:grid-cols-5 gap-8 items-start">
+                    <div class="lg:col-span-3 order-2 lg:order-1">
+                        <p class="text-gray-700 leading-relaxed mb-6 dark:text-gray-300">
+                            Alongside our manufacturing expertise, we design and develop custom software tools, workflow platforms,
+                            and business solutions that enhance operational efficiency and enable seamless commercial processes.
+                            With a focus on innovation, quality, and reliability, we serve diverse industrial sectors across India
+                            and global markets.
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
+                            <li>Custom software tools and platforms for workflow automation.</li>
+                            <li>Platforms for streamlining internal operations, vendor management, and process tracking.</li>
+                        </ul>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Company *</label>
-                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+
+                    <div class="lg:col-span-2 order-1 lg:order-2">
+                        <div class="rounded-xl ring-1 ring-gray-200 shadow-md overflow-hidden bg-white dark:bg-white/10 dark:ring-white/10">
+                            <iframe id="ananyaLogoFrame"
+                                    src="logo.html#animatedLogo"
+                                    title="Ananya LLP animated logo"
+                                    class="w-full h-[320px] block"
+                                    loading="lazy"
+                                    style="border:0; overflow:hidden;"
+                                    scrolling="no"
+                                    sandbox></iframe>
+                        </div>
                     </div>
                 </div>
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Email *</label>
-                        <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+            </div>
+
+            <!-- CTA Band -->
+            <section class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-corporate-blue py-16 text-center">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-bold text-white mb-4">Looking for consistent supply?</h2>
+                    <p class="text-blue-100 mb-8 max-w-2xl mx-auto">Get in touch with our team for custom quotes and technical specifications</p>
+                    <a href="#contact" class="bg-white text-corporate-blue px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">Get Quote Now</a>
+                </div>
+            </section>
+
+            <!-- CONTACT / RFQ -->
+            <section id="contact" class="py-20 relative">
+                <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.10),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.08),transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(31,111,235,0.18),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(18,183,106,0.14),transparent_60%)]"></div>
+
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-3 dark:text-gray-100">Request for Quote</h2>
+                        <p class="text-gray-600 max-w-2xl mx-auto dark:text-gray-300/80">Tell us about your requirements, and we'll get back to you with a detailed quote</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Phone *</label>
-                        <input type="tel" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" required>
+
+                    <div class="rounded-2xl p-6 sm:p-8 lg:p-10 bg-white/18 backdrop-blur-2xl ring-1 ring-white/40 border border-white/20 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.35)] dark:bg-white/10 dark:ring-white/10 dark:border-white/10">
+                        <form id="rfqForm"
+                              action="https://formspree.io/f/xvgqlyvq"
+                              method="POST" enctype="multipart/form-data"
+                              class="space-y-6" novalidate>
+                            <input type="hidden" name="_subject" value="New RFQ — Supreme Group"/>
+                            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true"/>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="name">Name *</label>
+                                    <input id="name" name="name" type="text" required
+                                           minlength="2" maxlength="60" autocomplete="name"
+                                           pattern="^[A-Za-z][A-Za-z\s\.\-']{1,59}$"
+                                           class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="company">Company *</label>
+                                    <input id="company" name="company" type="text" required
+                                           minlength="2" maxlength="80" autocomplete="organization"
+                                           class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="email">Email *</label>
+                                    <input id="email" name="email" type="email" required
+                                           autocomplete="email"
+                                           inputmode="email"
+                                           class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="phone">Phone *</label>
+                                    <input id="phone" name="phone" type="tel" required
+                                           autocomplete="tel"
+                                           inputmode="tel"
+                                           pattern="^[\+\d][\d\s\-\(\)]{6,20}$"
+                                           class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="item">Item of Interest</label>
+                                    <select id="item" name="item"
+                                            class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100">
+                                        <option value="">Select Product</option>
+                                        <option>Non-Electric Detonator Housings</option>
+                                        <option>STL Connectors & Sleeves</option>
+                                        <option>Booster Cups</option>
+                                        <option>Custom Moulded Parts</option>
+                                        <option>Fibrillated PP Yarn</option>
+                                        <option>Slitted BOPP Films</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="location">Country/State</label>
+                                    <input id="location" name="location" type="text"
+                                           autocomplete="country-name"
+                                           class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="details">Quantity & Specifications</label>
+                                <textarea id="details" name="details" rows="4"
+                                          maxlength="2000"
+                                          placeholder="Please provide quantity requirements and technical specifications..."
+                                          class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal mb-2 dark:text-gray-200" for="file_link">Link to drawings/specifications (Google Drive/Dropbox)</label>
+                                <input id="file_link" name="file_link" type="url"
+                                       placeholder="https://drive.google.com/…"
+                                       pattern="^https?:\/\/.+"
+                                       inputmode="url" autocomplete="url"
+                                       class="w-full p-3 rounded-lg bg-white/90 border border-white/60 focus:ring-2 focus:ring-corporate-blue focus:border-transparent dark:bg-white/10 dark:border-white/10 dark:text-gray-100"/>
+                                <p class="text-xs text-gray-600/90 mt-1 dark:text-gray-400">
+                                    Make sure sharing is set to <em>Anyone with the link – Viewer</em>.
+                                </p>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input id="want_datasheets" type="checkbox" name="want_datasheets" value="yes" class="mr-3 accent-corporate-blue"/>
+                                <label for="want_datasheets" class="text-sm text-charcoal dark:text-gray-200">Send me product datasheets</label>
+                            </div>
+
+                            <div id="rfqErrors" class="text-sm text-red-600" role="alert" aria-live="polite"></div>
+
+                            <button type="submit" class="w-full bg-corporate-blue text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg">
+                                Submit RFQ
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">Item of Interest</label>
-                        <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
-                            <option>Select Product</option>
-                            <option>Non-Electric Detonator Housings</option>
-                            <option>STL Connectors & Sleeves</option>
-                            <option>Booster Cups</option>
-                            <option>Custom Moulded Parts</option>
-                            <option>Fibrillated PP Yarn</option>
-                            <option>Slitted BOPP Films</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-charcoal mb-2">City/State</label>
-                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-charcoal mb-2">Quantity & Specifications</label>
-                    <textarea rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent" placeholder="Please provide quantity requirements and technical specifications..."></textarea>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-charcoal mb-2">File Upload</label>
-                    <input type="file" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-corporate-blue focus:border-transparent">
-                    <p class="text-xs text-gray-500 mt-1">Upload technical drawings, specifications, or reference documents</p>
-                </div>
-                <div class="mb-6">
-                    <label class="flex items-center">
-                        <input type="checkbox" class="mr-3 text-corporate-blue">
-                        <span class="text-sm text-charcoal">Send me product datasheets</span>
-                    </label>
-                </div>
-                <button type="submit" class="w-full bg-corporate-blue text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                    Submit RFQ
+            </section>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4 dark:text-gray-100">Frequently Asked Questions</h2>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-white border border-gray-200 rounded-lg dark:bg-white/5 dark:border-white/10">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger">
+                    <span class="font-semibold text-charcoal dark:text-gray-100">How do you ensure timely delivery, even for urgent requirements?</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform" aria-hidden="true"></i>
                 </button>
-            </form>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-charcoal mb-4">Frequently Asked Questions</h2>
+                <div class="accordion-content px-6 pb-6">
+                    <p class="text-gray-600 dark:text-gray-300">We follow a well-coordinated production and dispatch schedule, supported by strong vendor relationships and optimized logistics planning, to meet even the most urgent timelines.</p>
+                </div>
             </div>
-            <div class="space-y-4">
-                <div class="bg-white border border-gray-200 rounded-lg">
-                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                        <span class="font-semibold text-charcoal">What are your typical lead times?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-6">
-                        <p class="text-gray-600">Standard products: 2-3 weeks. Custom components: 4-6 weeks depending on complexity. Rush orders available with premium pricing.</p>
-                    </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg dark:bg-white/5 dark:border-white/10">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger">
+                    <span class="font-semibold text-charcoal dark:text-gray-100">How do you manage supply efficiency without warehouses in multiple states?</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform" aria-hidden="true"></i>
+                </button>
+                <div class="accordion-content px-6 pb-6">
+                    <p class="text-gray-600 dark:text-gray-300">Our supply chain model is designed for direct-to-client efficiency, allowing us to ship fresh batches straight from production, ensuring speed and reduced storage costs.</p>
                 </div>
-                <div class="bg-white border border-gray-200 rounded-lg">
-                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                        <span class="font-semibold text-charcoal">What are your minimum order quantities?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-6">
-                        <p class="text-gray-600">MOQs vary by product. Standard components: 1000 pieces minimum. Custom moulded parts: 5000 pieces minimum. Films and yarn: 500kg minimum.</p>
-                    </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg dark:bg-white/5 dark:border-white/10">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger">
+                    <span class="font-semibold text-charcoal dark:text-gray-100">How does Supreme Group maintain high production capacity across its product range?</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform" aria-hidden="true"></i>
+                </button>
+                <div class="accordion-content px-6 pb-6">
+                    <p class="text-gray-600 dark:text-gray-300">We operate with flexible production lines and precision tooling systems, enabling us to handle large volumes while maintaining quality and product consistency.</p>
                 </div>
-                <div class="bg-white border border-gray-200 rounded-lg">
-                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                        <span class="font-semibold text-charcoal">Do you offer customization services?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-6">
-                        <p class="text-gray-600">Yes, we specialize in custom moulded parts. Our engineering team can work with your specifications to develop components that meet your exact requirements.</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 rounded-lg">
-                    <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger" onclick="toggleAccordion(this)">
-                        <span class="font-semibold text-charcoal">What compliance certifications do you maintain?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-6">
-                        <p class="text-gray-600">We maintain ISO quality standards and RoHS/REACH compliance where applicable. All our products are non-hazardous plastic components with full material traceability.</p>
-                    </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg dark:bg-white/5 dark:border-white/10">
+                <button class="w-full p-6 text-left flex justify-between items-center accordion-trigger">
+                    <span class="font-semibold text-charcoal dark:text-gray-100">What quality control measures ensure consistency and reliability?</span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform" aria-hidden="true"></i>
+                </button>
+                <div class="accordion-content px-6 pb-6">
+                    <p class="text-gray-600 dark:text-gray-300">Every batch undergoes rigorous inspection at multiple stages, with testing protocols aligned to industry standards and tailored to client-specific requirements. All our products are non-hazardous plastic components with full material traceability.</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="bg-charcoal text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- FOOTER -->
+<footer class="text-white w-full">
+    <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-[#111315]/95 backdrop-blur-xl ring-1 ring-white/10 shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.5)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
                     <h3 class="text-2xl font-bold mb-4">Supreme Group</h3>
-                    <p class="text-gray-300 mb-4">Precision components and industrial films for reliable supply chains.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fab fa-whatsapp text-2xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fas fa-phone text-2xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fas fa-envelope text-2xl"></i>
-                        </a>
+                    <p class="text-white/80 mb-4">Precision Films & Industrial Components For Reliable Supply Chains.</p>
+                    <div class="flex gap-3 items-center">
+                        <a href="#" class="text-white/80 hover:text-white" data-contact="whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp text-2xl" aria-hidden="true"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white" data-contact="phone" aria-label="Phone"><i class="fas fa-phone text-2xl" aria-hidden="true"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white" data-contact="email" aria-label="Email"><i class="fas fa-envelope text-2xl" aria-hidden="true"></i></a>
                     </div>
                 </div>
+
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Contact Information</h4>
-                    <div class="space-y-2 text-gray-300">
-                        <p><i class="fas fa-map-marker-alt mr-2"></i>Noida, Uttar Pradesh</p>
-                        <p><i class="fas fa-map-marker-alt mr-2"></i>Mathura, Uttar Pradesh</p>
-                        <p><i class="fas fa-envelope mr-2"></i>info@supremegroup.in</p>
-                        <p><i class="fas fa-phone mr-2"></i>+91 XXXXX XXXXX</p>
+                    <div class="space-y-2 text-white/80">
+                        <p><i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>Ghaziabad (Delhi-NCR), Uttar Pradesh</p>
+                        <p><i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>IIDC KOSI KOTWAN - Mathura, Uttar Pradesh</p>
+                        <p><i class="fas fa-envelope mr-2" aria-hidden="true"></i>supremelaminations@gmail.com</p>
+                        <p><i class="fas fa-envelope mr-2" aria-hidden="true"></i>ajeetlalexplosives@gmail.com</p>
+                        <p><i class="fas fa-phone mr-2" aria-hidden="true"></i>+91-0120-3670745</p>
                     </div>
                 </div>
+
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <div class="space-y-2">
-                        <a href="#products" class="block text-gray-300 hover:text-white">Products</a>
-                        <a href="#films-yarn" class="block text-gray-300 hover:text-white">Films & Yarn</a>
-                        <a href="#quality" class="block text-gray-300 hover:text-white">Quality</a>
-                        <a href="#contact" class="block text-gray-300 hover:text-white">Contact</a>
+                        <a href="#products"   class="block text-white/80 hover:text-white">Products</a>
+                        <a href="#films-yarn" class="block text-white/80 hover:text-white">Films & Yarn</a>
+                        <a href="#industries" class="block text-white/80 hover:text-white">Quality</a>
+                        <a href="#contact"    class="block text-white/80 hover:text-white">Contact</a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-700 mt-12 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-300 text-sm">© 2024 Supreme Group. All rights reserved.</p>
-                    <p class="text-gray-400 text-xs mt-4 md:mt-0 max-w-md text-center md:text-right">
-                        We manufacture non-hazardous plastic components; we do not handle explosive substances.
-                    </p>
+
+            <div class="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-white/70 text-sm">© 2025 Supreme Group. All rights reserved.</p>
+                <p class="text-white/60 text-xs mt-4 md:mt-0 max-w-md text-center md:text-right">
+                    We manufacture non-hazardous plastic components; we do not handle explosive substances.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Contact Modal (single, canonical) -->
+<div class="contact-backdrop" id="contactBackdrop" aria-hidden="true"></div>
+<div class="contact-modal" id="contactModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <div class="contact-card">
+        <div class="contact-header">
+            <div class="contact-title" id="contactTitle">Get in touch</div>
+            <button class="icon-btn" id="contactClose" aria-label="Close"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        </div>
+
+        <div class="contact-tabs" role="tablist" aria-label="Contact methods">
+            <button class="tab" role="tab" aria-selected="true"  data-tab="whatsapp"><i class="fab fa-whatsapp mr-2" aria-hidden="true"></i>WhatsApp</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="phone"><i class="fa-solid fa-phone mr-2" aria-hidden="true"></i>Phone</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="email"><i class="fa-solid fa-envelope mr-2" aria-hidden="true"></i>Email</button>
+        </div>
+
+        <div class="contact-body">
+            <!-- WhatsApp -->
+            <div class="panel" data-panel="whatsapp">
+                <div class="contact-row">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    <div>
+                        <div class="font-semibold">Chat on WhatsApp</div>
+                        <div class="text-sm opacity-80">+ 9 1 - 8 2 8 7 6 3 6 1 5 3</div>
+                    </div>
+                    <div class="actions">
+                        <a id="waLink" class="chip" href="https://wa.me/918287636153" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i> Open</a>
+                        <button class="chip" data-copy="+ 9 1 - 8 2 8 7 6 3 6 1 5 3"><i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="panel" data-panel="phone" hidden>
+                <div class="contact-row">
+                    <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                    <div>
+                        <div class="font-semibold">Call us</div>
+                        <div class="text-sm opacity-80">+ 9 1 - 0 1 2 0 - 3 6 7 0 7 4 5</div>
+                    </div>
+                    <div class="actions">
+                        <a class="chip" href="tel:+9101203670745"><i class="fa-solid fa-phone" aria-hidden="true"></i> Call</a>
+                        <button class="chip" data-copy="+ 9 1 - 0 1 2 0 - 3 6 7 0 7 4 5"><i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="panel" data-panel="email" hidden>
+                <div class="contact-row">
+                    <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                    <div>
+                        <div class="font-semibold">General Enquiry</div>
+                        <div class="text-sm opacity-80">supremelaminations@gmail.com</div>
+                    </div>
+                    <div class="actions">
+                        <a class="chip" href="mailto:supremelaminations@gmail.com?subject=Enquiry%20%E2%80%94%20Supreme%20Group"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Email</a>
+                        <button class="chip" data-copy="supremelaminations@gmail.com"><i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy</span></button>
+                    </div>
+                </div>
+
+                <div class="contact-row">
+                    <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                    <div>
+                        <div class="font-semibold">Sales</div>
+                        <div class="text-sm opacity-80">ajeetlalexplosives@gmail.com</div>
+                    </div>
+                    <div class="actions">
+                        <a class="chip" href="mailto:ajeetlalexplosives@gmail.com?subject=RFQ%20%E2%80%94%20Supreme%20Group"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Email</a>
+                        <button class="chip" data-copy="ajeetlalexplosives@gmail.com"><i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy</span></button>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</div>
 
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+<!-- Scripts (all nonced, no innerHTML injections) -->
+<script nonce="sgNonce">
+    'use strict';
 
-        // Accordion functionality
-        function toggleAccordion(button) {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('i');
-           
-            // Close all other accordions
-            document.querySelectorAll('.accordion-content').forEach(item => {
-                if (item !== content) {
-                    item.classList.remove('active');
-                    item.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
-                }
-            });
-           
-            // Toggle current accordion
-            content.classList.toggle('active');
-            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
+    /* ---------- Helpers ---------- */
+    const qs  = (sel, root=document) => root.querySelector(sel);
+    const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
-        // Form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
+    // Safe URL setter for anchors (only allowed schemes)
+    function setSafeHref(a, url) {
+      try {
+        const u = new URL(url, location.href);
+        const allowed = ['http:', 'https:', 'mailto:', 'tel:'];
+        if (!allowed.includes(u.protocol)) return;
+        a.setAttribute('href', u.toString());
+      } catch { /* ignore invalid url */ }
+    }
+
+    // Smooth scrolling (prevents hash-jacking)
+    qsa('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        if (href && href.length > 1) {
+          const target = qs(href);
+          if (target) {
             e.preventDefault();
-            alert('Thank you for your inquiry! We will get back to you within 24 hours.');
-        });
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }, { passive: true });
+    });
 
-        // Product Datasheets button
-        document.querySelector('button:contains("Product Datasheets")').addEventListener('click', function() {
-            alert('Product datasheets will be sent to your email. Please fill out the contact form to receive them.');
+    /* ---------- Theme Engine (Auto / Light / Dark) ---------- */
+    (function () {
+      const root = document.documentElement;
+      const mq   = matchMedia('(prefers-color-scheme: dark)');
+
+      function apply(mode) {
+        const dark = mode === 'dark' || (mode === 'auto' && mq.matches);
+        root.classList.toggle('dark', dark);
+        root.dataset.themeMode = mode;
+        try { localStorage.setItem('themeMode', mode); } catch {}
+      }
+
+      function syncSelect() {
+        const select = qs('#themeSelect');
+        const current = root.dataset.themeMode || (localStorage.getItem('themeMode') || 'auto');
+        if (select && select.value !== current) select.value = current;
+      }
+
+      function bind() {
+        const select = qs('#themeSelect');
+        if (select && !select._bound) {
+          select.addEventListener('change', () => apply(select.value));
+          select._bound = true;
+        }
+        syncSelect();
+      }
+
+      const onSysChange = () => {
+        if ((root.dataset.themeMode || 'auto') === 'auto') apply('auto');
+      };
+      mq.addEventListener ? mq.addEventListener('change', onSysChange)
+                          : mq.addListener(onSysChange);
+
+      apply(root.dataset.themeMode || (localStorage.getItem('themeMode') || 'auto'));
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bind, { once: true });
+      } else { bind(); }
+    })();
+
+    /* ---------- Accordion ---------- */
+    qsa('.accordion-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('i');
+        qsa('.accordion-content').forEach(item => {
+          if (item !== content) {
+            item.classList.remove('active');
+            const ico = item.previousElementSibling?.querySelector('i');
+            if (ico) ico.style.transform = 'rotate(0deg)';
+          }
         });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e18076d177595a',t:'MTc1NTAxNzc0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+        content.classList.toggle('active');
+        if (icon) icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
+    });
+
+    /* ---------- Contact modal (no innerHTML mutations) ---------- */
+    (function () {
+      const modal   = qs('#contactModal');
+      const back    = qs('#contactBackdrop');
+      const closeBt = qs('#contactClose');
+      const tabs    = qsa('.contact-tabs .tab');
+      const panels  = qsa('.contact-body .panel');
+      if (!modal || !back || !closeBt) return;
+
+      function show(which='whatsapp'){
+        modal.setAttribute('aria-hidden','false');
+        back.setAttribute('aria-hidden','false');
+        switchTab(which);
+        setTimeout(()=>closeBt.focus(),0);
+        document.body.style.overflow='hidden';
+      }
+      function hide(){
+        modal.setAttribute('aria-hidden','true');
+        back.setAttribute('aria-hidden','true');
+        document.body.style.overflow='';
+      }
+      function switchTab(which){
+        tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab===which)));
+        panels.forEach(p => p.hidden = (p.dataset.panel!==which));
+        const title = qs('#contactTitle');
+        if (title){
+          title.textContent =
+            which==='whatsapp' ? 'Chat on WhatsApp' :
+            which==='phone'    ? 'Call us'          : 'Send an Email';
+        }
+      }
+
+      document.addEventListener('click', (e)=>{
+        const btn = e.target.closest('[data-contact]');
+        if(!btn) return;
+        e.preventDefault();
+        const mode = btn.getAttribute('data-contact');
+        show(mode==='all' ? 'whatsapp' : mode);
+      });
+
+      tabs.forEach(t => t.addEventListener('click', ()=> switchTab(t.dataset.tab)));
+
+      // Copy buttons: change text only (no HTML injection)
+      modal.addEventListener('click', async (e)=>{
+        const c = e.target.closest('[data-copy]');
+        if(!c) return;
+        const btn = c.tagName === 'BUTTON' ? c : e.target.closest('button');
+        const label = btn?.querySelector('span');
+        if (!label) return;
+        const original = label.textContent;
+        try{
+          await navigator.clipboard.writeText(c.dataset.copy);
+          label.textContent = 'Copied';
+          setTimeout(()=> { label.textContent = original; }, 1200);
+        }catch{/* ignore */}
+      });
+
+      back.addEventListener('click', hide);
+      closeBt.addEventListener('click', hide);
+      document.addEventListener('keydown', (e)=>{
+        if(e.key==='Escape' && modal.getAttribute('aria-hidden')==='false') hide();
+      });
+    })();
+
+    /* ---------- LIVE IST CLOCK ---------- */
+    (function(){
+      const el = document.getElementById('istClock');
+      if(!el) return;
+      const timeEl = el.querySelector('.time');
+
+      const fmtTime = new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      });
+      const fmtFull = new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        weekday: 'short', day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      });
+
+      function tick(){
+        const now = new Date();
+        timeEl.textContent = fmtTime.format(now);
+        el.title = 'IST — ' + fmtFull.format(now);
+      }
+      tick();
+      let timer = setInterval(tick, 1000);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden){ clearInterval(timer); }
+        else { tick(); timer = setInterval(tick, 1000); }
+      }, { passive: true });
+    })();
+
+    /* ---------- RFQ FORM VALIDATION ---------- */
+    (function(){
+      const form = qs('#rfqForm');
+      if(!form) return;
+      const err = qs('#rfqErrors');
+
+      function setError(msg){
+        if (!err) return;
+        err.textContent = msg || '';
+      }
+
+      form.addEventListener('submit', (e)=>{
+        setError('');
+        const name = form.name.value.trim();
+        const company = form.company.value.trim();
+        const email = form.email.value.trim();
+        const phone = form.phone.value.trim();
+        const link = form.file_link.value.trim();
+
+        // Basic checks (client-side only; server must still validate)
+        if (name.length < 2 || !/^[A-Za-z][A-Za-z\s.\-']{1,59}$/.test(name)){
+          e.preventDefault(); setError('Please enter a valid name (letters, spaces, . - \')'); return;
+        }
+        if (company.length < 2){
+          e.preventDefault(); setError('Please enter a valid company name.'); return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+          e.preventDefault(); setError('Please enter a valid email address.'); return;
+        }
+        if (!/^[\+\d][\d\s\-\(\)]{6,20}$/.test(phone)){
+          e.preventDefault(); setError('Please enter a valid phone number.'); return;
+        }
+        if (link && !/^https?:\/\/.+/i.test(link)){
+          e.preventDefault(); setError('The drawings/specifications link must start with http(s)://'); return;
+        }
+        // Normalize tel: link for the Phone "Call" chip (defend against malformed schemes)
+        const telChip = document.querySelector('a[href^="tel:"]');
+        if (telChip) setSafeHref(telChip, 'tel:' + phone.replace(/[^\d+]/g,''));
+      });
+    })();
+</script>
+</body>
 </html>
